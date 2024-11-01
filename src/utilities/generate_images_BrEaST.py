@@ -6,10 +6,11 @@ import pandas as pd
 from breast_ultrasound.src.functions import bbox_around_mask,\
      mask_bounding_box
 
-from common import border_around_bbox
+from common import border_around_bbox, patch_distance, patch_size
+from functions import denoise_nlm
 
 images_source_folder = (f'../../breast_ultrasound/data/images/'
-                        f'pre-processed/resized+denoised')
+                        f'pre-processed/resized')
 images_dest_folder = '../data/datasets/BrEaST/images'
 metadata_dest_folder = '../data/datasets/BrEaST/metadata'
 for folder in [images_dest_folder, metadata_dest_folder]:
@@ -47,6 +48,10 @@ for _, row in df_metadata_in.iterrows():
     cropped_img = img[ul[0]:lr[0],ul[1]:lr[1]]
     cropped_roi = mask[ul[0]:lr[0],ul[1]:lr[1]] * 255
     cropped_mask = 0 * cropped_roi + 255
+    
+    #Apply denoising
+    cropped_img = denoise_nlm(img_in=cropped_img, patch_size=patch_size, 
+                              patch_distance=patch_distance)
     
     #Save the image and the mask
     img_name = f'{row["CaseID"]:03d}_img.png'
