@@ -64,7 +64,7 @@ for _, row in df_metadata_in.iterrows():
     
     #Add record to the out dataframe
     record = {'CaseID': row["CaseID"],
-              'Malignancy': row['Classification'] == 'malignant',
+              'Malignancy': int(row['Classification'] == 'malignant'),
               'Image_filename': img_name,
               'Mask_filename': mask_name,
               'Roi_filename': roi_name}

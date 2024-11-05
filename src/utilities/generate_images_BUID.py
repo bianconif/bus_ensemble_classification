@@ -65,7 +65,7 @@ for case_id, label in case_ids_and_labels:
     
     #Add record to the out dataframe
     record = {'CaseID': case_id,
-              'Malignancy': label == 'Malignant',
+              'Malignancy': int(label == 'Malignant'),
               'Image_filename': img_name,
               'Mask_filename': mask_name,
               'Roi_filename': roi_name}
