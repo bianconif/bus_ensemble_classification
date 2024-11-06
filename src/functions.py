@@ -44,23 +44,24 @@ def denoise_nlm(img_in, patch_size=5, patch_distance=6):
     
     return img_out
 
-def compute_features(name, src_images, case_ids, dst_folder, 
-                     feature_extractor, overwrite=False, verbose=True):
+def compute_features(name, src_images, pattern_ids, dst_folder, 
+                     feature_extractor, feature_prefix, 
+                     overwrite=False, verbose=True):
     """Computes features. Generates a name.csv file in the dst_folder 
     where each row corresponds to one image. Columns are organised as 
     follows:
     
     - Image_filename -> Image name (including the extension)
-    - Feature__0001, Feature__0002, ... -> the feature values
+    - {feature_prefix}0001, {feature_prefix}0002, ... -> the feature values
     
     Parameters
     ----------
     name: str
         The name of the feature set 
     src_images: iterable of str (N)
-        Relative or absolute full paths to the the source images
-    case_ids: iterable of str (N)
-        The case id corresponding to each image
+        Relative or absolute full paths to the the source images.
+    pattern_ids: iterable of str (N)
+        Labels that uniquely identifies each pattern (image).
     dst_folder: str
         Path to the folder where the csv cotaining the feature values
         will be stored. The folder is created automatically if not 
@@ -70,6 +71,8 @@ def compute_features(name, src_images, case_ids, dst_folder,
         implements the get_features() function. The function should
         take as input a cenotaph.basics.base_classes.Image and return a
         1d array of features.
+    feature_prefix: str
+        Prefix to identify the feature columns in the generated dataframe.
     overwrite: bool
         If False the features are not computed if a name.csv file is 
         already present in the dst_folder. Otherwise the features are 
@@ -110,8 +113,8 @@ def compute_features(name, src_images, case_ids, dst_folder,
             
             #Copy the feature values into the corresponding dataframe
             #columns
-            feature_keys = [f'Feature__{str(i).zfill(n_digits)}' for i in 
-                            range(len(feature_values))]  
+            feature_keys = [f'{feature_prefix}{str(i).zfill(n_digits)}' 
+                            for i in range(len(feature_values))]  
             
             #Append to the dataframe
             record = {'Image_filename': os.path.basename(src_image)}
@@ -125,7 +128,7 @@ def compute_features(name, src_images, case_ids, dst_folder,
         
         #Insert the case id at the beginning in the DataFrame
         df_features.insert(loc=0, column='CaseID',
-                           value=case_ids.tolist())
+                           value=pattern_ids.tolist())
         
         #Save the dataframe
         df_features.to_csv(path_or_buf=f'{dst_folder}/{name}.csv', 
@@ -133,5 +136,23 @@ def compute_features(name, src_images, case_ids, dst_folder,
         
     return None
         
+def get_feature_columns(df_features, feature_prefix):
+    """Extracts the feature columns from a feature dataframe
+    
+    Parameters
+    ----------
+    df_features: pd.DataFrame
+        The feature dataframe.
+    feature_prefix: src
+        The prefix that identifies the columns containing the features
+        in the feature dataframe.
         
+    Returns
+    -------
+    feature_columns: list of str
+        List of the columns that contain the features.  
+    """    
+    feature_columns = [c for c in df_features.columns if 
+                       c.startswith(feature_prefix)]
+    return feature_columns
     

@@ -2,7 +2,7 @@ import pandas as pd
 
 from common import datasets, datasets_image_subfolder,\
      datasets_metadata_file, datasets_root, descriptors,\
-     features_root_folder
+     features_root_folder, feature_prefix, pattern_id_column
 from functions import compute_features
 
 #Table of the combinations features/datasets
@@ -46,6 +46,7 @@ for _, row in df_features_to_generate.iterrows():
     dst_folder = f'{features_root_folder}/{row["Dataset"]}'
         
     compute_features(name=descriptor_name, src_images=src_files, 
-                     case_ids=df_metadata['CaseID'], 
+                     pattern_ids=df_metadata[pattern_id_column], 
                      dst_folder=dst_folder, 
-                     feature_extractor=descriptor_wrapper.descriptor)
+                     feature_extractor=descriptor_wrapper.descriptor,
+                     feature_prefix=feature_prefix)
