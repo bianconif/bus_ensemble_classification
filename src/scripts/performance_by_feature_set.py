@@ -1,11 +1,12 @@
 from itertools import product
 import numpy as np
 import pandas as pd
+from tabulate import tabulate
 
 from ml_routines.src.performance_estimation import cross_validation,\
      _get_sensitivity_specificity, internal_validation
 
-from common import clfs, scalers, testing_conditions, texture_descriptors
+from common import clfs, scalers, testing_conditions, descriptors
 from common import datasets_root, datasets_metadata_file, n_splits,\
      features_root_folder, train_test_split_method
 from common import binary_class_labels, class_column, feature_prefix,\
@@ -13,7 +14,7 @@ from common import binary_class_labels, class_column, feature_prefix,\
 from functions import get_feature_columns
 
 experimental_conditions = product(
-    texture_descriptors, testing_conditions, clfs, scalers
+    descriptors, testing_conditions, clfs, scalers
 )
 
 df_results = pd.DataFrame()
@@ -24,6 +25,8 @@ for experimental_condition in experimental_conditions:
               'Test': experimental_condition[1]['test'],
               'Classifier': experimental_condition[2],
               'Scaler': experimental_condition[3]}
+    
+    print(f'Testing {record}')
     
     common_params = {'clf': clfs[record['Classifier']],
                      'scaler': scalers[record['Scaler']],
@@ -52,6 +55,9 @@ for experimental_condition in experimental_conditions:
             binary_class_labels=binary_class_labels,
             **common_params
         )
+        
+        #Convert to %
+        results = 100*results
         
         _means, _stds = np.mean(results, axis=0), np.std(results, axis=0)
         record.update({'Acc. avg': _means[0], 'Acc. std': _stds[0],
@@ -89,10 +95,14 @@ for experimental_condition in experimental_conditions:
             results, binary_class_labels=binary_class_labels
         )  
         
-        record.update({'Acc. avg': acc, 'Acc. std': None,
-                       'Sens.': sens, 'Spec.': spec})         
+        #Convert to %
+        record.update({'Acc. avg': 100*acc, 'Acc. std': None,
+                       'Sens.': 100*sens, 'Spec.': 100*spec})         
       
             
     df_results = pd.concat((df_results, 
                             pd.DataFrame(data=record, index=[0])))
-a = 0
+    
+df_results.to_csv('performace-by-feature-set.csv')
+    
+print(tabulate(df_results, headers='keys', floatfmt="3.1f"))

@@ -5,6 +5,42 @@ from skimage.restoration import denoise_nl_means, estimate_sigma
 
 from cenotaph.basics.base_classes import Image
 
+def split_image(img, num_splits):
+    """Splits an image into non-overlapping tiles (partition)
+    
+    Parameters
+    ----------
+    img : int (H,W)
+        The input image
+    num_splits : int (2)
+        The number of splits in height and width respectively
+        
+    Returns
+    -------
+    tiles : list of length num_splits[0] * num_splits[1]
+        The image tiles
+    """
+    
+    #Compute the size of the central crop
+    h, w = [i - i % j for i,j in zip(img.shape, num_splits)]
+    
+    #Compute the size of the tiles
+    tile_height, tile_width = h//num_splits[0], w//num_splits[1]
+    
+    #Centre-crop the original image
+    H, W = img.shape[0:2] 
+    ul = (np.floor((H-h)/2).astype(np.uint),
+          np.floor((W-w)/2).astype(np.uint))
+    cropped_img = img[ul[0]:ul[0] + h, ul[1]:ul[1] + w]
+    
+    #Get the tiles
+    tiles = list()
+    for i in range(0, cropped_img.shape[0], tile_height):  
+        for j in range(0, cropped_img.shape[1], tile_width):
+            tiles.append(cropped_img[i:i+tile_height, 
+                                     j:j+tile_width])       
+    return tiles
+
 def denoise_nlm(img_in, patch_size=5, patch_distance=6):
     """Performs image denoising by non-linear means
     
