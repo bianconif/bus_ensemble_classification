@@ -129,17 +129,19 @@ class LBP:
         """
         Parameters
         ----------
-        img: cenotaph.basics.base_classes.Image
-            The grey-scale input image.
+        img: PIL.Image
+            The input image.
         
         Returns
         -------
         features: iterable of float
         """
         
+        img = np.asarray(ImageOps.grayscale(img))
+        
         #Compute the LBP codes
         lbp_image = local_binary_pattern(
-            image=img.get_data(), P=self._n_points, R=self._radius, 
+            image=img, P=self._n_points, R=self._radius, 
             method=self._method
         )
     
