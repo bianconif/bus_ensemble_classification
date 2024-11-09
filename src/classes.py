@@ -5,11 +5,9 @@ from skimage.measure import regionprops_table
 from skimage.feature import hog
 from skimage.feature import local_binary_pattern
 
-from PIL import Image as PilImage
+from PIL import Image, ImageOps
 from torchvision.models.feature_extraction import create_feature_extractor
 import torch
-
-from cenotaph.basics.base_classes import Image
 
 from functions import split_image
 
@@ -72,8 +70,8 @@ class HOG:
         """
         Parameters
         ----------
-        img: cenotaph.basics.base_classes.Image
-            The grey-scale input image.
+        img: PIL.Image
+            The input image.
         
         Returns
         -------
@@ -82,8 +80,9 @@ class HOG:
         """         
         
         features = list()
+        img = np.asarray(ImageOps.grayscale(img))
         
-        for tile in split_image(img=img.get_data(), 
+        for tile in split_image(img=img, 
                                 num_splits=self._num_splits):
             hog_response = hog(
                 tile,
@@ -92,7 +91,8 @@ class HOG:
                 block_norm='L1',
                 feature_vector=True)
         
-        features.extend(hog_response)   
+            features.extend(hog_response)  
+            
         return features
 
 class LBP:
@@ -218,7 +218,7 @@ class PreTrainedCNN:
             The features
         """        
 
-        pil_img = PilImage.fromarray(img.get_data())
+        pil_img = Image.fromarray(img.get_data())
 
         features = self._extract_intermediate_features(
             model=self.model, 
@@ -232,7 +232,7 @@ class PreTrainedCNN:
     @staticmethod
     def _extract_intermediate_features(model, weights, target_layer, img, 
                                        norm_order=1, 
-                                       resizing_method=PilImage.BICUBIC):
+                                       resizing_method=Image.BICUBIC):
         """Extract intermediate features from a PyTorch pre-trained CNN model
 
         Parameters

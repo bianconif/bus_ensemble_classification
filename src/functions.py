@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from skimage.restoration import denoise_nl_means, estimate_sigma
 
-from cenotaph.basics.base_classes import Image
+from PIL import Image
 
 def split_image(img, num_splits):
     """Splits an image into non-overlapping tiles (partition)
@@ -137,7 +137,7 @@ def compute_features(name, src_images, pattern_ids, dst_folder,
         for src_image in src_images:
             
             #Read the input image
-            img = Image(src_image)
+            img = Image.open(src_image)
             
             #Compute the features
             feature_values = feature_extractor.get_features(img)
