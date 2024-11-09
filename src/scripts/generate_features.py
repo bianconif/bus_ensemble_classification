@@ -1,19 +1,29 @@
 import pandas as pd
 
 from common import datasets, datasets_image_subfolder,\
-     datasets_metadata_file, datasets_root, descriptors,\
+     datasets_metadata_file, datasets_root,\
      features_root_folder, feature_prefix, pattern_id_column
+from common import cnn_descriptors, morphological_features,\
+     texture_descriptors
 from functions import compute_features
+
+#This script computes the following classes of features. LIFEx-generated
+#features are not computed here
+descriptors_to_compute = {**morphological_features, 
+                          **texture_descriptors,
+                          **cnn_descriptors}
 
 #Table of the combinations features/datasets
 df_features_to_generate = pd.DataFrame()
 for dataset in datasets:
-    for descriptor_name in descriptors:
+    for descriptor_name in descriptors_to_compute:
         record = {
             'Dataset': dataset,
             'Descriptor_name': descriptor_name,
-            'Image_src_folder': f'{datasets_root}/{dataset}/{datasets_image_subfolder}',
-            'Metadata_file': f'{datasets_root}/{dataset}/{datasets_metadata_file}'
+            'Image_src_folder': (f'{datasets_root}/{dataset}/'
+                                 f'{datasets_image_subfolder}'),
+            'Metadata_file': (f'{datasets_root}/{dataset}/'
+                              f'{datasets_metadata_file}')
         }
         df_features_to_generate = pd.concat(
             (df_features_to_generate, pd.DataFrame(data=record, index=[0]))
@@ -27,7 +37,7 @@ for _, row in df_features_to_generate.iterrows():
     
     #Get the descriptor wrapper
     descriptor_name = row['Descriptor_name']
-    descriptor_wrapper = descriptors[descriptor_name]
+    descriptor_wrapper = descriptors_to_compute[descriptor_name]
     
     #Get the list of input files
     match descriptor_wrapper.mode:

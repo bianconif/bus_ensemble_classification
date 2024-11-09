@@ -29,6 +29,25 @@ class DescriptorWrapper:
     """
     descriptor: object
     mode: str
+
+@dataclass    
+class ClassifierWrapper:
+    """Wrapper around a classifier.
+    
+    Attributes
+    ----------
+    classifier: object
+        The classifier object. An untrained instance of a classifier
+        object as provided by sckiti-learn, or any other object which 
+        implements that interface.
+    param_grid: dict or None
+        Dictionary with parameters names (str) as keys and lists of 
+        parameter settings to try as values. Used for hyperparameter
+        tuning by exhaustive search. Choose None if tuning is not 
+        required.
+    """
+    classifier: object
+    param_grid: dict
     
 class HOG:
     """Computes features based on histograms of oriented gradients"""

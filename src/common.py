@@ -10,8 +10,8 @@ from torchvision.models import convnext_base, ConvNeXt_Base_Weights,\
 
 from cenotaph.texture.filtering import DCF, Gabor, Laws
 
-from classes import DescriptorWrapper, HOG, LBP, Morphological,\
-     PreTrainedCNN
+from classes import ClassifierWrapper, DescriptorWrapper, HOG, LBP,\
+     Morphological, PreTrainedCNN
 
 #Extent of the border around the bounding box
 border_around_bbox = 4
@@ -157,6 +157,8 @@ cnn_descriptors = {
 descriptors = {**morphological_features, 
                **texture_descriptors,
                **cnn_descriptors}
+#descriptors = {**morphological_features, 
+               #**texture_descriptors}
 #========================================
 #========================================
 #========================================
@@ -183,7 +185,7 @@ testing_conditions = [
     {'train': datasets[0], 'test': datasets[0]},
     {'train': datasets[0], 'test': datasets[1]},
     {'train': datasets[1], 'test': datasets[1]},
-    {'train': datasets[0], 'test': datasets[1]}
+    {'train': datasets[1], 'test': datasets[0]}
 ]
 
 scalers = {
@@ -191,7 +193,16 @@ scalers = {
 }
 
 clfs = {
-    'Rbf SVC': SVC()
+    'Rbf SVC':
+    ClassifierWrapper(
+        classifier = SVC(kernel='rbf', gamma='auto'),
+        param_grid = None
+    ),
+    'Rbf SVC (tuned)':
+    ClassifierWrapper(
+        classifier = SVC(kernel='rbf', gamma='auto'),
+        param_grid = {'C': [0.01, 0.1, 1.0, 10.0, 100.0]}
+    )    
 }
 #========================================
 #========================================

@@ -16,23 +16,30 @@ from functions import get_feature_columns
 experimental_conditions = product(
     descriptors, testing_conditions, clfs, scalers
 )
+experimental_conditions = list(experimental_conditions)
 
 df_results = pd.DataFrame()
 
-for experimental_condition in experimental_conditions:
+for ec_idx, experimental_condition in enumerate(experimental_conditions):
     record = {'Descriptor': experimental_condition[0],
               'Train': experimental_condition[1]['train'],
               'Test': experimental_condition[1]['test'],
               'Classifier': experimental_condition[2],
               'Scaler': experimental_condition[3]}
     
-    print(f'Testing {record}')
+    print(f'Testing {ec_idx + 1} of {len(experimental_conditions)} '
+          f'{record}')
     
-    common_params = {'clf': clfs[record['Classifier']],
+    common_params = {'clf': clfs[record['Classifier']].classifier,
                      'scaler': scalers[record['Scaler']],
                      'pattern_id_column': pattern_id_column,
                      'class_column': class_column
                      }
+    
+    #Perform hyperparameter tuning if requested
+    if clfs[record['Classifier']].param_grid is not None:
+        common_params.update({'param_grid': 
+                             clfs[record['Classifier']].param_grid})
     
     if record['Train'] == record['Test']:
         #Perform internal validation
@@ -101,8 +108,25 @@ for experimental_condition in experimental_conditions:
       
             
     df_results = pd.concat((df_results, 
-                            pd.DataFrame(data=record, index=[0])))
+                            pd.DataFrame(data=record, index=[ec_idx])))
+
+#Get the best avg accuracy by feature set, train and test dataset
+df_best_by_feature_set = pd.DataFrame()
+for name, grp in df_results.groupby(by=['Descriptor', 'Train', 'Test']):
     
-df_results.to_csv('performace-by-feature-set.csv')
+    #Index of every row where the value of 'Acc. acg' is equal to the 
+    #maximum
+    max_acc_idxs = grp[grp['Acc. avg'] == grp['Acc. avg'].max()].index
+    df_best_by_feature_set = pd.concat((df_best_by_feature_set,
+                                        df_results.loc[max_acc_idxs]),
+                                       )
     
+df_results.to_csv('complete-performance-by-feature-set.csv')
+df_best_by_feature_set.to_csv('best-performance-by-feature-set.csv')
+
+print('Complete results')
 print(tabulate(df_results, headers='keys', floatfmt="3.1f"))
+print()
+
+print('Best accuracy by feature set')
+print(tabulate(df_best_by_feature_set, headers='keys', floatfmt="3.1f"))
