@@ -1,9 +1,12 @@
+from cv2 import getGaborKernel
 from dataclasses import dataclass
 import numpy as np
 
+from scipy.ndimage import convolve
 from skimage.measure import regionprops_table
 from skimage.feature import hog
 from skimage.feature import local_binary_pattern
+
 
 from PIL import Image, ImageOps
 from torchvision.models.feature_extraction import create_feature_extractor
@@ -46,6 +49,76 @@ class ClassifierWrapper:
     """
     classifier: object
     param_grid: dict
+       
+class Gabor:
+    """Computes features based on Gabor filters"""
+    
+    def __init__(self, n_freqs, min_freq, max_freq, 
+                 n_ornts, ksize=11, sigma=2.0, gamma=1.0):
+        """
+        Parameters
+        ----------
+        n_freqs: int
+            The number of frequencies.
+        min_freq: float
+            The minimum frequency of the filter bank in px**-1.
+        max_freq: float
+            The maximum frequency of the filter bank in px**-1. 
+        n_ornts: int
+            The number of orientations
+        ksize: tuple of int (W,H)
+            The size of the filter kernel (width, height) in pixels. 
+        sigma: float
+            The standard deviation of the Gaussian envelope.
+        gamma: float
+            The spatial aspect ratio (ellipticity) of the filter.
+        """
+        
+        #Compute the frequency and orientation of each filter from the
+        #given parameters
+        freqs = np.linspace(start=min_freq, stop=max_freq, 
+                            num=n_freqs, endpoint=True)    
+        ornts = np.linspace(start=0.0, stop=np.pi/2, num=n_ornts, 
+                            endpoint=False)            
+        
+        #Prepare the filter bank's kernels. Observe that OpenCV returns 
+        #the real part of the Gabor filter
+        self._kernels = list()
+        for ornt in ornts:
+            for freq in freqs:
+                kernel = getGaborKernel(
+                    ksize=ksize, lambd=1/freq, theta=ornt, 
+                    sigma=sigma, gamma=gamma)
+                self._kernels.append(kernel)
+       
+    def get_features(self, img):
+        """
+        Parameters
+        ----------
+        img: PIL.Image
+            The input image.
+        
+        Returns
+        -------
+        features: iterable of float
+            The features
+        """         
+        
+        features = list()
+        img = np.asarray(ImageOps.grayscale(img))       
+        
+        #Iterate through the filter bank and compute the transformed images
+        for kernel in self._kernels:
+                    
+            #Compute the transformed image
+            transformed_image = convolve(img, weights=kernel, 
+                                         mode='wrap')
+                    
+            features.append(transformed_image.mean())
+            features.append(transformed_image.std())  
+            
+        return features
+        
     
 class HOG:
     """Computes features based on histograms of oriented gradients"""
