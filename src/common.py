@@ -201,7 +201,7 @@ clfs = {
     'Rbf SVC (tuned)':
     ClassifierWrapper(
         classifier = SVC(kernel='rbf', gamma='auto'),
-        param_grid = {'C': [0.01, 0.1, 1.0, 10.0, 100.0]}
+        param_grid = {'C': [0.1, 1.0, 10.0, 100.0]}
     )    
 }
 #========================================
