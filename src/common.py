@@ -8,8 +8,8 @@ from torchvision.models import convnext_base, ConvNeXt_Base_Weights,\
      MobileNet_V2_Weights, resnet50, ResNet50_Weights,\
      swin_v2_s, Swin_V2_S_Weights
 
-from classes import ClassifierWrapper, DescriptorWrapper, Gabor, HOG,\
-     LBP, Morphological, PreTrainedCNN
+from classes import ClassifierWrapper, DCF, DescriptorWrapper, Gabor,\
+     HOG, LBP, Morphological, PreTrainedCNN
 
 #Extent of the border around the bounding box
 border_around_bbox = 4
@@ -64,7 +64,12 @@ morphological_features = {
     )
 }
 
-texture_descriptors = {   
+texture_descriptors = {
+    'DCF':
+    DescriptorWrapper(
+        descriptor=DCF(n_freqs=5, ksize=10),
+        mode='image'
+    ),    
     'Gabor':
     DescriptorWrapper(
         descriptor=Gabor(n_freqs=5, min_freq=0.05, max_freq=0.35, 

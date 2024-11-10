@@ -12,7 +12,7 @@ from PIL import Image, ImageOps
 from torchvision.models.feature_extraction import create_feature_extractor
 import torch
 
-from functions import split_image
+from functions import separable_filters, split_image
 
 
 @dataclass
@@ -49,6 +49,57 @@ class ClassifierWrapper:
     """
     classifier: object
     param_grid: dict
+       
+class DCF:
+    """Computes features based on discrete cosine filters"""
+    
+    def __init__(self, n_freqs, ksize=11):
+        """
+        Parameters
+        ----------
+        n_freqs: int
+            Number of horizontal and vertical frequencies.
+        ksize: int
+            The side length of the filter (in pixels).
+        """
+        x = 2 * np.arange(ksize) + 1
+        u = 0.5 * np.arange(n_freqs) * np.pi / ksize
+        p = np.cos(np.outer(u, x))
+    
+        dcf_filters = separable_filters(p)
+        
+        self._kernels = list()
+        for kernel_idx in range(dcf_filters.shape[2]):
+            self._kernels.append(dcf_filters[:,:,kernel_idx])
+            
+    def get_features(self, img):
+        """
+        Parameters
+        ----------
+        img: PIL.Image
+            The input image.
+        
+        Returns
+        -------
+        features: iterable of float (n_freqs ** 2)
+            The features (mean and standard deviation of each transformed
+            image).
+        """
+        
+        features = list()
+        img = np.asarray(ImageOps.grayscale(img))       
+        
+        #Iterate through the filter bank and compute the transformed images
+        for kernel in self._kernels:
+                    
+            #Compute the transformed image
+            transformed_image = convolve(img, weights=kernel, 
+                                         mode='wrap')
+                    
+            features.append(transformed_image.mean())
+            features.append(transformed_image.std())  
+            
+        return features        
        
 class Gabor:
     """Computes features based on Gabor filters"""
@@ -100,8 +151,9 @@ class Gabor:
         
         Returns
         -------
-        features: iterable of float
-            The features
+        features: iterable of float (n_freqs * n_ornts * 2)
+            The features (mean and standard deviation of each transformed
+            image).
         """         
         
         features = list()

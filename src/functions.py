@@ -191,4 +191,22 @@ def get_feature_columns(df_features, feature_prefix):
     feature_columns = [c for c in df_features.columns if 
                        c.startswith(feature_prefix)]
     return feature_columns
+
+def separable_filters(singledim):
+    """Combine a sequence of one-dimensional filters into a bank of 
+    two-dimensional ones.
+
+    Parameters
+    ----------
+    singledim : ndarray (sz, N) 
+        One dimensional filters of size N
+
+    Returns
+    -------
+    ndarray (N, N, M**2) 
+        The two-dimensional filters
+    """
+    sz = singledim.shape[1]
+    f = np.einsum('ai, bj -> ijab', singledim, singledim)
+    return f.reshape([sz, sz, -1])
     
