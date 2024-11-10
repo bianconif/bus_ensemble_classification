@@ -245,8 +245,8 @@ class Morphological:
         """
         Parameters
         ----------
-        bw_img: cenotaph.basics.base_classes.Image
-            The input image. Needs to be a two-level array where 0 
+        bw_img: PIL.Image
+            The input image. A two-level image where 0 
             reprents the backround, and the other value the foreground (
             i.e., the ROI)
             
@@ -255,7 +255,7 @@ class Morphological:
         features: iterable of float
             The features
         """
-        mask = bw_img.get_data()
+        mask = np.asarray(bw_img)
         props = regionprops_table(mask, 
                                   properties=('area',
                                               'area_bbox',
