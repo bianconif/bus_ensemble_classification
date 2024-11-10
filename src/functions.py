@@ -105,7 +105,7 @@ def compute_features(name, src_images, pattern_ids, dst_folder,
     feature_extractor: object
         The feature extractor object. It is assumed that the object
         implements the get_features() function. The function should
-        take as input a cenotaph.basics.base_classes.Image and return a
+        take as input a PIL.Image and return a
         1d array of features.
     feature_prefix: str
         Prefix to identify the feature columns in the generated dataframe.
