@@ -284,8 +284,8 @@ class PreTrainedCNN:
         """
         Parameters
         ----------
-        img: cenotaph.basics.base_classes.Image
-            The grey-scale input image.
+        img: PIL.Image
+            The input image.
         
         Returns
         -------
@@ -293,13 +293,13 @@ class PreTrainedCNN:
             The features
         """        
 
-        pil_img = Image.fromarray(img.get_data())
+        img = np.asarray(ImageOps.grayscale(img))
 
         features = self._extract_intermediate_features(
             model=self.model, 
             weights=self.weights,
             target_layer=self.layer,
-            img=pil_img
+            img=img
         )
     
         return features
@@ -318,7 +318,7 @@ class PreTrainedCNN:
             The model's weigths     
         target_layer: str
             Name of the layer where the features are extracted from
-        img: PIL Image
+        img: np.array (H,W)
             The input image
         norm_order: int or None
             The order of the norm used for normalising the output. Use None
@@ -339,12 +339,11 @@ class PreTrainedCNN:
         #Convert the image to three-channel
         img = np.expand_dims(a=img, axis=2)
         img = np.tile(A=img, reps=(1,1,3))
-        img = PilImage.fromarray(img)
+        img = Image.fromarray(img)
 
         #======= Workarund to get the input size (fov) of the CNN ===
         #Create a dummy image as a copy of the input image
-        dummy_img = np.array(img).copy()
-        dummy_img = PilImage.fromarray(dummy_img)
+        dummy_img = img.copy()
 
         #Preprocess the dummy image based on the model's weights
         preprocess = weights.transforms()
