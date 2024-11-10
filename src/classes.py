@@ -7,7 +7,7 @@ from skimage.measure import regionprops_table
 from skimage.feature import hog
 from skimage.feature import local_binary_pattern
 
-
+from pyfeats import fdta
 from PIL import Image, ImageOps
 from torchvision.models.feature_extraction import create_feature_extractor
 import torch
@@ -100,6 +100,48 @@ class DCF:
             features.append(transformed_image.std())  
             
         return features        
+       
+class FDTA:
+    """Computes features based on fractal dimension texture analysis"""
+    
+    def __init__(self, num_splits=(3,3), max_res=3):
+        """
+        Parameters
+        ----------
+        num_splits : tuple of ints (2)
+            The number of vertical and horizontal subdivisions into which
+            the original image is split. Hurst coefficients are computed 
+            from each tile and the resulting features concatenated.
+        max_res: int
+            Max resolution to calculate Hurst coefficients.
+        """
+        self._max_res = max_res
+        self._num_splits = num_splits
+    
+    
+    def get_features(self, img):
+        """
+        Parameters
+        ----------
+        img: PIL.Image
+            The input image.
+        
+        Returns
+        -------
+        features: iterable of float 
+                  (num_splits[0] * num_splits[0] * (max_res + 1))
+            The features.
+        """             
+        features = list()
+        img = np.asarray(ImageOps.grayscale(img))
+        
+        for tile in split_image(img=img, 
+                                num_splits=self._num_splits):
+            fdta_response, _ = fdta(f=tile, mask=None, s=self._max_res)
+            np.nan_to_num(fdta_response, copy=False)
+            features.extend(fdta_response)        
+        
+        return features
        
 class Gabor:
     """Computes features based on Gabor filters"""
