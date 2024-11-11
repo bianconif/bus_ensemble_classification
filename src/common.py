@@ -42,7 +42,7 @@ class_column = 'Malignancy'
 binary_class_labels = ('1','0')
 
 #========================================
-#=========== Feature sets ===============
+#===== Feature sets (descriptors) =======
 #========================================
 
 #Cache folder for LBP-like descriptors
@@ -157,11 +157,23 @@ cnn_descriptors = {
 }
 
 
-descriptors = {**morphological_features, 
-               **texture_descriptors,
-               **cnn_descriptors}
-#descriptors = {**morphological_features, 
-               #**texture_descriptors}
+single_descriptors = {**morphological_features, 
+                      **texture_descriptors,
+                      **cnn_descriptors}
+
+
+#========================================
+#========================================
+#========================================
+
+#========================================
+#===== Combination of descriptors) ======
+#========================================
+combined_descriptors = {
+    'Morphological+HOG': ['Morphological', 'HOG']
+}
+
+combination_modes = ['early-fusion']
 #========================================
 #========================================
 #========================================

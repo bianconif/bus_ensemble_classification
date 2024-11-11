@@ -6,7 +6,7 @@ from tabulate import tabulate
 from ml_routines.src.performance_estimation import cross_validation,\
      _get_sensitivity_specificity, internal_validation
 
-from common import clfs, scalers, testing_conditions, descriptors
+from common import clfs, scalers, testing_conditions, single_descriptors
 from common import datasets_root, datasets_metadata_file, n_splits,\
      features_root_folder, train_test_split_method
 from common import binary_class_labels, class_column, feature_prefix,\
@@ -14,7 +14,7 @@ from common import binary_class_labels, class_column, feature_prefix,\
 from functions import get_feature_columns
 
 experimental_conditions = product(
-    descriptors, testing_conditions, clfs, scalers
+    single_descriptors, testing_conditions, clfs, scalers
 )
 experimental_conditions = list(experimental_conditions)
 
@@ -121,12 +121,12 @@ for name, grp in df_results.groupby(by=['Descriptor', 'Train', 'Test']):
                                         df_results.loc[max_acc_idxs]),
                                        )
     
-df_results.to_csv('complete-performance-by-feature-set.csv')
-df_best_by_feature_set.to_csv('best-performance-by-feature-set.csv')
+df_results.to_csv('complete-performance-single-descriptors.csv')
+df_best_by_feature_set.to_csv('best-performance-single-descriptors.csv')
 
 print('Complete results')
 print(tabulate(df_results, headers='keys', floatfmt="3.1f"))
 print()
 
-print('Best accuracy by feature set')
+print('Best accuracy of single descriptors')
 print(tabulate(df_best_by_feature_set, headers='keys', floatfmt="3.1f"))

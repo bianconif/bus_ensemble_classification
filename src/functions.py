@@ -186,11 +186,12 @@ def get_feature_columns(df_features, feature_prefix):
     Returns
     -------
     feature_columns: list of str
-        List of the columns that contain the features.  
+        List of the columns that contain the features sorted in 
+        alphabetical order.  
     """    
     feature_columns = [c for c in df_features.columns if 
                        c.startswith(feature_prefix)]
-    return feature_columns
+    return sorted(feature_columns)
 
 def separable_filters(singledim):
     """Combine a sequence of one-dimensional filters into a bank of 
