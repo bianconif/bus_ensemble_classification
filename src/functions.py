@@ -2,6 +2,7 @@ import numpy as np
 import os
 import pandas as pd
 from skimage.restoration import denoise_nl_means, estimate_sigma
+from statsmodels.stats.proportion import proportion_confint
 
 from PIL import Image
 
@@ -210,4 +211,51 @@ def separable_filters(singledim):
     sz = singledim.shape[1]
     f = np.einsum('ai, bj -> ijab', singledim, singledim)
     return f.reshape([sz, sz, -1])
+
+def pack_results(acc, sens, spec, n_test_samples, alpha, ci_method):
+    """Generates a dict containing the summary performance metrics.
+    
+    Parameters
+    ----------
+    acc, sens, spec: float
+        Accuracy, sensitivity and specificity values defined in [0,1].
+    valid_res: nparray (n_splits,3)
+        The array of results for each split, where columns represent
+        accuracy, sensitivity and specificity respectively.
+    n_test_samples: int
+        Number of samples tested (for estimating confidence interval
+        for accuracy).
+    alpha: float
+        Significance level for accuracy's confidence intervals.
+    ci_method: str
+        The method used for estimating accuracy's confidence interval. See
+        proportion_confint for possible values.
+        
+    Returns
+    -------
+    results_dict: dict
+        Dictionary summarising the results.
+    """
+    
+    #Estimate confidence interval fro accuracy
+    acc_ci = proportion_confint(count=int(acc*n_test_samples), 
+                                nobs=n_test_samples,
+                                alpha=alpha,
+                                method=ci_method)    
+    
+    #Convert to percentages
+    acc, sens, spec, *acc_ci = 100*np.array((acc, sens, spec, *acc_ci))
+    
+    results_dict = {'Acc.': acc, 
+                    'Acc. CI_l': acc_ci[0], 
+                    'Acc. CI_u': acc_ci[1],
+                    'Sens.': sens, 
+                    'Spec.': spec}
+    
+    return results_dict
+    
+     
+    
+
+    
     

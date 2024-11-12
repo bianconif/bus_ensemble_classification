@@ -4,14 +4,15 @@ import pandas as pd
 from tabulate import tabulate
 
 from ml_routines.src.performance_estimation import cross_validation,\
-     _get_sensitivity_specificity, internal_validation
+     internal_validation
 
 from common import clfs, scalers, testing_conditions, single_descriptors
 from common import datasets_root, datasets_metadata_file, n_splits,\
      features_root_folder, train_test_split_method
 from common import binary_class_labels, class_column, feature_prefix,\
      pattern_id_column
-from functions import get_feature_columns
+from common import acc_ci_alpha, acc_ci_method
+from functions import get_feature_columns, pack_results
 
 experimental_conditions = product(
     single_descriptors, testing_conditions, clfs, scalers
@@ -62,14 +63,17 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
             binary_class_labels=binary_class_labels,
             **common_params
         )
-        
-        #Convert to %
-        results = 100*results
-        
-        _means, _stds = np.mean(results, axis=0), np.std(results, axis=0)
-        record.update({'Acc. avg': _means[0], 'Acc. std': _stds[0],
-                       'Sens.': _means[1], 'Spec.': _means[2]})         
-        
+                
+        #Create result record        
+        _means = np.mean(results, axis=0)
+        record.update(
+            pack_results(
+                acc=_means[0], sens=_means[1], spec=_means[2], 
+                n_test_samples=df_features.shape[0], alpha=acc_ci_alpha, 
+                ci_method=acc_ci_method
+            )
+        )
+               
     else:
         #Perform cross validation
         
@@ -97,14 +101,16 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
             feature_columns=feature_columns, 
             **common_params)  
         
-        acc = results['accuracy']
-        sens, spec = _get_sensitivity_specificity(
-            results, binary_class_labels=binary_class_labels
-        )  
-        
-        #Convert to %
-        record.update({'Acc. avg': 100*acc, 'Acc. std': None,
-                       'Sens.': 100*sens, 'Spec.': 100*spec})         
+        #Create result record        
+        record.update(
+            pack_results(
+                acc=results['accuracy'], 
+                sens=results[binary_class_labels[0]]['recall'], 
+                spec=results[binary_class_labels[1]]['recall'], 
+                n_test_samples=df_features.shape[0], alpha=acc_ci_alpha, 
+                ci_method=acc_ci_method
+            )
+        )        
       
             
     df_results = pd.concat((df_results, 
@@ -116,7 +122,7 @@ for name, grp in df_results.groupby(by=['Descriptor', 'Train', 'Test']):
     
     #Index of every row where the value of 'Acc. acg' is equal to the 
     #maximum
-    max_acc_idxs = grp[grp['Acc. avg'] == grp['Acc. avg'].max()].index
+    max_acc_idxs = grp[grp['Acc.'] == grp['Acc.'].max()].index
     df_best_by_feature_set = pd.concat((df_best_by_feature_set,
                                         df_results.loc[max_acc_idxs]),
                                        )
