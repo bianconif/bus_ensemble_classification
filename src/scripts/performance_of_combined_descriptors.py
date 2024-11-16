@@ -3,11 +3,11 @@ import numpy as np
 import pandas as pd
 from tabulate import tabulate
 
-from ml_routines.src.performance_estimation import cross_validation,\
-     internal_validation
+from ml_routines.src.performance_estimation import\
+     cross_validation_combined, internal_validation_combined
 from ml_routines.src.combining import concatenate_features
 
-from common import clfs, scalers, testing_conditions, combination_modes,\
+from common import clfs, scalers, testing_conditions, fusion_methods,\
      combined_descriptors
 from common import datasets_root, datasets_metadata_file, n_splits,\
      features_root_folder, train_test_split_method
@@ -17,7 +17,7 @@ from common import acc_ci_alpha, acc_ci_method
 from functions import get_feature_columns, pack_results
 
 experimental_conditions = product(
-    combined_descriptors, combination_modes, testing_conditions, clfs, 
+    combined_descriptors, fusion_methods, testing_conditions, clfs, 
     scalers
 )
 experimental_conditions = list(experimental_conditions)
@@ -26,7 +26,7 @@ df_results = pd.DataFrame()
 
 for ec_idx, experimental_condition in enumerate(experimental_conditions):
     record = {'Descriptor': experimental_condition[0],
-              'Combination mode': experimental_condition[1],
+              'Fusion method': experimental_condition[1],
               'Train': experimental_condition[2]['train'],
               'Test': experimental_condition[2]['test'],
               'Classifier': experimental_condition[3],
@@ -67,39 +67,30 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
         
         df_metadata = pd.read_csv(metadata_src)        
         
-        match experimental_condition[1]:
-            case 'early-fusion':
-                
-                df_features, feature_columns = concatenate_features(
-                    dfs_features=dfs_features, 
-                    feature_columns=feature_columns_list, 
-                    pattern_id_column=pattern_id_column)
-                
-                results = internal_validation(
-                    df_features=df_features, 
-                    df_metadata=df_metadata, 
-                    splits_file=splits_file, 
-                    method=train_test_split_method, 
-                    method_params={'n_splits': n_splits}, 
-                    feature_columns=feature_columns,
-                    binary_output=True, 
-                    binary_class_labels=binary_class_labels,
-                    **common_params
-                )
-                
-            case _:
-                raise Exception('Combination mode not supported')
-            
+        results = internal_validation_combined(
+            dfs_features=dfs_features, 
+            df_metadata=df_metadata,  
+            fusion_method=experimental_condition[1],
+            splits_file=splits_file, 
+            split_method=train_test_split_method,
+            split_method_params={'n_splits': n_splits}, 
+            feature_columns_list=feature_columns_list,
+            binary_output=True, 
+            binary_class_labels=binary_class_labels,
+            **common_params
+        )
+        
         #Create result record        
         _means = np.mean(results, axis=0)
         record.update(
             pack_results(
                 acc=_means[0], sens=_means[1], spec=_means[2], 
-                n_test_samples=df_features.shape[0], alpha=acc_ci_alpha, 
+                n_test_samples=dfs_features[0].shape[0], 
+                alpha=acc_ci_alpha, 
                 ci_method=acc_ci_method
             )
-        )    
-        
+        )       
+           
     else:
         #Perform cross validation
         
@@ -124,51 +115,37 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
         #Need to check that feature columns are the same in the train and 
         #test set
         
-        match experimental_condition[1]:
-            case 'early-fusion':
-                
-                dfs_train_features = [
-                    pd.read_csv(feature_src) for feature_src in 
-                    train_feature_srcs
-                ]
-                dfs_test_features = [
-                    pd.read_csv(feature_src) for feature_src in 
-                    test_feature_srcs
-                ]                
-                feature_columns_list = [get_feature_columns(
-                    df_features, feature_prefix) for df_features in 
-                                        dfs_train_features
-                ]
-                
-                df_train_features, feature_columns = concatenate_features(
-                    dfs_features=dfs_train_features, 
-                    feature_columns=feature_columns_list, 
-                    pattern_id_column=pattern_id_column) 
-                df_test_features, feature_columns = concatenate_features(
-                    dfs_features=dfs_test_features, 
-                    feature_columns=feature_columns_list, 
-                    pattern_id_column=pattern_id_column)                 
-                
-                results = cross_validation(
-                    df_train=df_train_features, 
-                    df_test=df_test_features, 
-                    df_train_metadata=df_train_metadata, 
-                    df_test_metadata=df_test_metadata, 
-                    feature_columns=feature_columns, 
-                    **common_params)                 
-                
-            case _:
-                raise Exception('Combination mode not supported')
+        dfs_train_features = [
+            pd.read_csv(feature_src) for feature_src in 
+            train_feature_srcs
+        ]
+        dfs_test_features = [
+            pd.read_csv(feature_src) for feature_src in 
+            test_feature_srcs
+        ]                
+        feature_columns_list = [get_feature_columns(
+            df_features, feature_prefix) for df_features in 
+                                dfs_train_features
+        ]        
         
  
-        
+        results = cross_validation_combined(
+            dfs_train=dfs_train_features, 
+            dfs_test=dfs_test_features, 
+            df_train_metadata=df_train_metadata,
+            df_test_metadata=df_test_metadata,
+            feature_columns_list=feature_columns_list, 
+            fusion_method=experimental_condition[1], 
+            **common_params)            
+                 
         #Create result record        
         record.update(
             pack_results(
                 acc=results['accuracy'], 
                 sens=results[binary_class_labels[0]]['recall'], 
                 spec=results[binary_class_labels[1]]['recall'], 
-                n_test_samples=df_features.shape[0], alpha=acc_ci_alpha, 
+                n_test_samples=dfs_test_features[0].shape[0], 
+                alpha=acc_ci_alpha, 
                 ci_method=acc_ci_method
             )
         )        

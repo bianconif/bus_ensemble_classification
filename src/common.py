@@ -170,10 +170,11 @@ single_descriptors = {**morphological_features,
 #===== Combination of descriptors) ======
 #========================================
 combined_descriptors = {
-    'Morphological+HOG': ['Morphological', 'HOG']
+    'ConvNeXt_base+Morphological+HOG': ['ConvNeXt_base', 'Morphological', 
+                                        'HOG']
 }
 
-combination_modes = ['early-fusion']
+fusion_methods = ['early-fusion', 'majority-voting', 'prod', 'sum']
 #========================================
 #========================================
 #========================================
@@ -210,7 +211,7 @@ scalers = {
 clfs = {
     'Rbf SVC':
     ClassifierWrapper(
-        classifier = SVC(kernel='rbf', gamma='auto'),
+        classifier = SVC(kernel='rbf', gamma='auto', probability=True),
         param_grid = {'C': [0.1, 1.0, 10.0, 100.0]}
     )    
 }
