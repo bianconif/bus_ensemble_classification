@@ -6,7 +6,8 @@ import pandas as pd
 from breast_ultrasound.src.functions import bbox_around_mask,\
      mask_bounding_box
 
-from common import border_around_bbox, patch_distance, patch_size
+from common import border_around_bbox, patch_distance, patch_size,\
+     pattern_id_column
 from functions import denoise_nlm
 
 images_source_folder = (f'../../breast_ultrasound/data/images/'
@@ -63,7 +64,7 @@ for _, row in df_metadata_in.iterrows():
     cv2.imwrite(f'{images_dest_folder}/{roi_name}', cropped_roi) 
     
     #Add record to the out dataframe
-    record = {'CaseID': row["CaseID"],
+    record = {pattern_id_column: row["CaseID"],
               'Malignancy': int(row['Classification'] == 'malignant'),
               'Image_filename': img_name,
               'Mask_filename': mask_name,

@@ -6,7 +6,8 @@ import pandas as pd
 from breast_ultrasound.src.functions import bbox_around_mask,\
      mask_bounding_box
 
-from common import border_around_bbox, patch_distance, patch_size
+from common import border_around_bbox, patch_distance, patch_size,\
+     pattern_id_column
 from functions import denoise_nlm
 
 images_source_folder = (f'../../../../../../../Disk_I/LACIE/ImageDatasets/Texture/Biomedical/BUS/breast-ultrasound-image-database-BUID/images')
@@ -64,7 +65,7 @@ for case_id, label in case_ids_and_labels:
     cv2.imwrite(f'{images_dest_folder}/{roi_name}', cropped_roi) 
     
     #Add record to the out dataframe
-    record = {'CaseID': case_id,
+    record = {pattern_id_column: case_id,
               'Malignancy': int(label == 'Malignant'),
               'Image_filename': img_name,
               'Mask_filename': mask_name,

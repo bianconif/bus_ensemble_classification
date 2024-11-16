@@ -4,7 +4,7 @@ from common import datasets, datasets_image_subfolder,\
      datasets_metadata_file, datasets_root,\
      features_root_folder, feature_prefix, pattern_id_column
 from common import cnn_descriptors, morphological_features,\
-     texture_descriptors
+     texture_descriptors, src_image_column
 from functions import compute_features
 
 #This script computes the following classes of features. LIFEx-generated
@@ -57,6 +57,8 @@ for _, row in df_features_to_generate.iterrows():
         
     compute_features(name=descriptor_name, src_images=src_files, 
                      pattern_ids=df_metadata[pattern_id_column], 
+                     pattern_id_column=pattern_id_column,
+                     src_image_column=src_image_column,
                      dst_folder=dst_folder, 
                      feature_extractor=descriptor_wrapper.descriptor,
-                     feature_prefix=feature_prefix)
+                     feature_prefix=feature_prefix) 

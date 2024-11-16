@@ -33,6 +33,9 @@ feature_prefix = 'Feature__'
 #Column that identifies the case id in the feature and metadata files
 pattern_id_column = 'CaseID' 
 
+#Column that identifies the image filename id in the feature files
+src_image_column = 'Image_filename'
+
 #Column that identifies the class label in the the feature and metadata 
 #files
 class_column = 'Malignancy'
