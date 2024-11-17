@@ -264,7 +264,7 @@ def pack_results(acc, sens, spec, n_test_samples, alpha, ci_method):
     return results_dict
     
 def retrieve_lifex_features(feature_names, lifex_out_file, 
-                            feature_prefix):
+                            feature_prefix, pattern_id_column):
     """Retrieves selected features from a LIFEx-generated output file
     
     Parameters
@@ -276,6 +276,9 @@ def retrieve_lifex_features(feature_names, lifex_out_file,
         LIFEx (v 7.6.0)
     feature_prefix: str
         Prefix to identify the feature columns in the generated dataframe.
+    pattern_id_column: str
+        Name of the column that identifies the unique pattern id in the
+        generated dataframe.
         
     Returns
     -------
@@ -285,18 +288,52 @@ def retrieve_lifex_features(feature_names, lifex_out_file,
     df = pd.read_csv(filepath_or_buffer=lifex_out_file)
     to_keep = [pattern_id_column]
     
-    #Add a CaseId column
-    df[pattern_id_column] = df['INFO_NameOfRoi'].apply(_extract_case_id)
+    #Add a pattern column
+    df[pattern_id_column] = df['INFO_NameOfRoi'].apply(
+        _extract_pattern_id_lifex)
     
     for feature_name in feature_names:
         for column in df.columns:
             if feature_name in column:
-                to_keep.append(column)
+                to_keep.append(column)    
                 break;
 
     df_features = df[to_keep]
+    
+    #Prepend feature prefix to the feature names
+    mapper = {feature: f'{feature_prefix}{feature}' for feature in
+              to_keep if feature != pattern_id_column}
+    df_features.rename(columns=mapper, inplace=True)    
+    
     return df_features  
     
-
+def _extract_pattern_id_lifex(name_of_roi):
+    """Extracts case ID from the 'INFO_NameOfRoi' field of the
+    LIFEx-generated otuput file
+    
+    Parameters
+    ----------
+    name_of_roi : str
+        Value of the 'INFO_NameOfRoi' field in a LIFEx-generated output 
+        file.
+        
+    Returns
+    -------
+    pattern_id : int
+        The pattern id.
+    """
+    
+    #The left and right substrings
+    substr = (left := 'case', right := '_')
+    
+    #Get indices of the substrings
+    idx_left, idx_right = [name_of_roi.index(s) for s in substr]
+    
+    #Get the elements in between
+    case_id = str()
+    for idx in range(idx_left + len(left), idx_right):
+        case_id = case_id + name_of_roi[idx]        
+    
+    return int(case_id)
     
     

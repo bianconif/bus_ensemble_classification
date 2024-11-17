@@ -48,12 +48,6 @@ binary_class_labels = ('1','0')
 #===== Feature sets (descriptors) =======
 #========================================
 
-#Cache folder for LBP-like descriptors
-#hep_luts = '../cache/hep_luts'
-#if not os.path.isdir(hep_luts):
-    #os.makedirs(hep_luts)
-    
-
 morphological_features = {
     'Morphological':
     DescriptorWrapper(
@@ -159,10 +153,127 @@ cnn_descriptors = {
     )     
 }
 
+#LIFEx feature table
+lifex_features = {
+    'intensity-based': 
+    ['INTENSITY-BASED_MeanIntensity(IBSI:Q4LE)',
+         'INTENSITY-BASED_IntensityVariance(IBSI:ECT3)',
+         'INTENSITY-BASED_IntensitySkewness(IBSI:KE2A)',
+         'INTENSITY-BASED_IntensityKurtosis(IBSI:IPH6)',
+         'INTENSITY-BASED_MedianIntensity(IBSI:Y12H)',
+         'INTENSITY-BASED_MinimumIntensity(IBSI:1GSF)',
+         'INTENSITY-BASED_10thIntensityPercentile(IBSI:QG58)',
+         'INTENSITY-BASED_25thIntensityPercentile(IBSI:No)',
+         'INTENSITY-BASED_50thIntensityPercentile(IBSI:Y12H)',
+         'INTENSITY-BASED_75thIntensityPercentile(IBSI:No)',
+         'INTENSITY-BASED_90thIntensityPercentile(IBSI:8DWT)',
+         'INTENSITY-BASED_StandardDeviation(IBSI:No)',
+         'INTENSITY-BASED_MaximumIntensity(IBSI:84IY)',
+         'INTENSITY-BASED_IntensityInterquartileRange(IBSI:SALO)',
+         'INTENSITY-BASED_IntensityRange(IBSI:2OJQ)',
+         'INTENSITY-BASED_IntensityBasedMeanAbsoluteDeviation(IBSI:4FUA)',
+         'INTENSITY-BASED_IntensityBasedRobustMeanAbsoluteDeviation(IBSI:1128)',
+         'INTENSITY-BASED_IntensityBasedMedianAbsoluteDeviation(IBSI:N72L)',
+         'INTENSITY-BASED_IntensityBasedCoefficientOfVariation(IBSI:7TET)',
+         'INTENSITY-BASED_IntensityBasedQuartileCoefficientOfDispersion(IBSI:9S40)',
+         'INTENSITY-BASED_AreaUnderCurveCIVH(IBSI:No)',
+         'INTENSITY-BASED_IntensityBasedEnergy(IBSI:N8CA)',
+         'INTENSITY-BASED_RootMeanSquareIntensity(IBSI:5ZWQ)'],
+    'intensity-histogram': 
+    ['INTENSITY-HISTOGRAM_IntensityHistogramMean(IBSI:X6K6)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramVariance(IBSI:CH89)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramSkewness(IBSI:88K1)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramKurtosis(IBSI:C3I7)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramMedian(IBSI:WIFQ)',
+         'INTENSITY-HISTOGRAM_IntensityHistogram10thPercentile(IBSI:GPMT)',
+         'INTENSITY-HISTOGRAM_IntensityHistogram25thPercentile(IBSI:No)',
+         'INTENSITY-HISTOGRAM_IntensityHistogram50thPercentile(IBSI:No)',
+         'INTENSITY-HISTOGRAM_IntensityHistogram75thPercentile(IBSI:No)',
+         'INTENSITY-HISTOGRAM_IntensityHistogram90thPercentile(IBSI:OZ0C)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramStd(IBSI:No)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramMode(IBSI:AMMC)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramInterquartileRange(IBSI:WR0O)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramMeanAbsoluteDeviation(IBSI:D2ZX)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramRobustMeanAbsoluteDeviation(IBSI:WRZB)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramMedianAbsoluteDeviation(IBSI:4RNL)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramCoefficientOfVariation(IBSI:CWYJ)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramQuartileCoefficientOfDispersion(IBSI:SLWD)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramEntropyLog10(IBSI:No)',
+         'INTENSITY-HISTOGRAM_IntensityHistogramEntropyLog2(IBSI:TLU2)',
+         'INTENSITY-HISTOGRAM_AreaUnderCurveCIVH(IBSI:No)',
+         'INTENSITY-HISTOGRAM_Uniformity(IBSI:BJ5W)',
+         'INTENSITY-HISTOGRAM_RootMeanSquare(IBSI:No)',
+         'INTENSITY-HISTOGRAM_MaximumHistogramGradient(IBSI:12CE)',
+         'INTENSITY-HISTOGRAM_MaximumHistogramGradientGreyLevel(IBSI:8E6O)',
+         'INTENSITY-HISTOGRAM_MinimumHistogramGradient(IBSI:VQB3)',
+         'HISTOGRAM_MinimumHistogramGradientGreyLevel(IBSI:RHQZ)'],
+    'GLCM': 
+    ['GLCM_JointMaximum(IBSI:GYBY)', 
+         'GLCM_JointAverage(IBSI:60VM)',
+         'GLCM_JointVariance(IBSI:UR99)',
+         'GLCM_JointEntropyLog2(IBSI:TU9B)',
+         'GLCM_JointEntropyLog10(IBSI:No)',
+         'GLCM_DifferenceAverage(IBSI:TF7R)',
+         'GLCM_DifferenceVariance(IBSI:D3YU)',
+         'GLCM_DifferenceEntropy(IBSI:NTRS)',
+         'GLCM_SumAverage(IBSI:ZGXS)',
+         'GLCM_SumVariance(IBSI:OEEB)',
+         'GLCM_SumEntropy(IBSI:P6QZ)',
+         'GLCM_AngularSecondMoment(IBSI:8ZQL)',
+         'GLCM_Contrast(IBSI:ACUI)',
+         'GLCM_Dissimilarity(IBSI:8S9J)',
+         'GLCM_InverseDifference(IBSI:IB1Z)',
+         'GLCM_NormalisedInverseDifference(IBSI:NDRX)',
+         'GLCM_InverseDifferenceMoment(IBSI:WF0Z)',
+         'GLCM_NormalisedInverseDifferenceMoment(IBSI:1QCO)',
+         'GLCM_InverseVariance(IBSI:E8JP)',
+         'GLCM_Correlation(IBSI:NI2N)',
+         'GLCM_Autocorrelation(IBSI:QWB0)',
+         'GLCM_ClusterTendency(IBSI:DG8W)',
+         'GLCM_ClusterShade(IBSI:7NFM)',
+         'GLCM_ClusterProminence(IBSI:AE86)'],
+    'GLRLM': 
+    ['GLRLM_ShortRunsEmphasis(IBSI:22OV)',
+         'GLRLM_LongRunsEmphasis(IBSI:W4KF)',
+         'GLRLM_LowGreyLevelRunEmphasis(IBSI:V3SW)',
+         'GLRLM_HighGreyLevelRunEmphasis(IBSI:G3QZ)',
+         'GLRLM_ShortRunLowGreyLevelEmphasis(IBSI:HTZT)',
+         'GLRLM_ShortRunHighGreyLevelEmphasis(IBSI:GD3A)',
+         'GLRLM_LongRunLowGreyLevelEmphasis(IBSI:IVPO)',
+         'GLRLM_LongRunHighGreyLevelEmphasis(IBSI:3KUM)',
+         'GLRLM_GreyLevelNonUniformity(IBSI:R5YN)',
+         'GLRLM_RunLengthNonUniformity(IBSI:W92Y)',
+         'GLRLM_RunPercentage(IBSI:9ZK5)'],
+    'NGTDM': 
+    ['NGTDM_Coarseness(IBSI:QCDE)',
+         'NGTDM_Contrast(IBSI:65HE)',
+         'NGTDM_Busyness(IBSI:NQ30)',
+         'NGTDM_Complexity(IBSI:HDEZ)',
+         'NGTDM_Strength(IBSI:1X9X)'],
+    'GLSZM': 
+    ['GLSZM_SmallZoneEmphasis(IBSI:5QRC)',
+         'GLSZM_LargeZoneEmphasis(IBSI:48P8)',
+         'GLSZM_LowGrayLevelZoneEmphasis(IBSI:XMSY)',
+         'GLSZM_HighGrayLevelZoneEmphasis(IBSI:5GN9)',
+         'GLSZM_SmallZoneLowGreyLevelEmphasis(IBSI:5RAI)',
+         'GLSZM_SmallZoneHighGreyLevelEmphasis(IBSI:HW1V)',
+         'GLSZM_LargeZoneLowGreyLevelEmphasis(IBSI:YH51)',
+         'GLSZM_LargeZoneHighGreyLevelEmphasis(IBSI:J17V)',
+         'GLSZM_GreyLevelNonUniformity(IBSI:JNSA)',
+         'GLSZM_NormalisedGreyLevelNonUniformity(IBSI:Y1RO)',
+         'GLSZM_ZoneSizeNonUniformity(IBSI:4JP3)',
+         'GLSZM_NormalisedZoneSizeNonUniformity(IBSI:VB3A)',
+         'GLSZM_ZonePercentage(IBSI:P30P)',
+         'GLSZM_GreyLevelVariance(IBSI:BYLV)',
+         'GLSZM_ZoneSizeVariance(IBSI:3NSA)',
+         'GLSZM_ZoneSizeEntropy(IBSI:GU8N)'],
+}	
 
-single_descriptors = {**morphological_features, 
-                      **texture_descriptors,
-                      **cnn_descriptors}
+
+
+single_descriptors = [*morphological_features.keys(), 
+                      *texture_descriptors.keys(),
+                      *cnn_descriptors.keys()]
 
 
 #========================================
@@ -235,3 +346,14 @@ acc_ci_method = 'agresti_coull'
 #===========================================================
 #===========================================================
 #===========================================================
+
+#===========================================================
+#============= LIFEx feature settings ======================
+#===========================================================
+
+#Subfolder where the raw LIFEx features are stored
+lifex_raw_features_subfolder = 'lifex_raw_features'
+
+#File containing the raw LIFEx features
+lifex_raw_feature_file = 'lifex_raw_features.csv'
+
