@@ -163,7 +163,7 @@ def compute_features(name, src_images, pattern_ids, src_image_column,
                             for i in range(len(feature_values))]  
             
             #Append to the dataframe
-            record = {'Image_filename': os.path.basename(src_image)}
+            record = dict()
             record.update(dict(zip(feature_keys, feature_values)))
             df_features = pd.concat([df_features, 
                                      pd.DataFrame(record, index=[0])])
@@ -265,7 +265,7 @@ def pack_results(acc, sens, spec, n_test_samples, alpha, ci_method):
     
 def retrieve_lifex_features(feature_names, lifex_out_file, 
                             feature_prefix, pattern_id_column,
-                            image_filename_column, parser):
+                            parser):
     """Retrieves selected features from a LIFEx-generated output file
     
     Parameters
@@ -280,8 +280,6 @@ def retrieve_lifex_features(feature_names, lifex_out_file,
     pattern_id_column: str
         Name of the column that identifies the unique pattern id in the
         generated dataframe.
-    image_filename_column: str
-        Name of the column that identifies the name of the source images.
     parser: object
         The dataset-specific function that parses the `INFO_NameOfRoi`
         column in the LIFEX-generated file
@@ -309,11 +307,7 @@ def retrieve_lifex_features(feature_names, lifex_out_file,
     mapper = {feature: f'{feature_prefix}{feature}' for feature in
               to_keep if feature != pattern_id_column}
     df_features.rename(columns=mapper, inplace=True)   
-    
-    #Add the image filename column
-    df_features.loc[image_filename_column] =\
-        df['INFO_SeriesPath'].apply(os.path.basename)    
-    
+        
     return df_features  
     
     

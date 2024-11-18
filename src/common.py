@@ -2,6 +2,7 @@ import os
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
 
 from torchvision.models import convnext_base, ConvNeXt_Base_Weights,\
      efficientnet_v2_s, EfficientNet_V2_S_Weights, mobilenet_v2,\
@@ -273,8 +274,8 @@ lifex_features = {
 
 single_descriptors = [*morphological_features.keys(), 
                       *texture_descriptors.keys(),
-                      *cnn_descriptors.keys()]
-
+                      *cnn_descriptors.keys(),
+                      *lifex_features.keys()]
 
 #========================================
 #========================================
@@ -284,11 +285,14 @@ single_descriptors = [*morphological_features.keys(),
 #===== Combination of descriptors) ======
 #========================================
 combined_descriptors = {
-    'ConvNeXt_base+Morphological+HOG': ['ConvNeXt_base', 'Morphological', 
-                                        'HOG']
+    #'ConvNeXt_base+Morphological+HOG': ['ConvNeXt_base', 'Morphological', 
+                                        #'HOG'],
+    'ConvNeXt_base+Morphological+HOG+IH': [
+        'ConvNeXt_base', 'Morphological', 'HOG', 'intensity-histogram']    
 }
 
-fusion_methods = ['early-fusion', 'majority-voting', 'prod', 'sum']
+#fusion_methods = ['early-fusion', 'majority-voting', 'prod', 'sum']
+fusion_methods = ['early-fusion']
 #========================================
 #========================================
 #========================================
@@ -327,7 +331,12 @@ clfs = {
     ClassifierWrapper(
         classifier = SVC(kernel='rbf', gamma='auto', probability=True),
         param_grid = {'C': [0.1, 1.0, 10.0, 100.0]}
-    )    
+    ),
+    #'Logistic regression':
+    #ClassifierWrapper(
+        #classifier = LogisticRegression(),
+        #param_grid = {'C': [0.1, 1.0, 10.0, 100.0]}
+    #)     
 }
 #========================================
 #========================================

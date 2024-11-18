@@ -21,19 +21,8 @@ def _extract_pattern_id_lifex_BrEaST(name_of_roi):
     pattern_id : int
         The pattern id.
     """
-    
-    #The left and right substrings
-    substr = (left := 'case', right := '_')
-    
-    #Get indices of the substrings
-    idx_left, idx_right = [name_of_roi.index(s) for s in substr]
-    
-    #Get the elements in between
-    case_id = str()
-    for idx in range(idx_left + len(left), idx_right):
-        case_id = case_id + name_of_roi[idx]        
-    
-    return int(case_id)
+        
+    return name_of_roi.rstrip('_mask')
 
 def _extract_pattern_id_lifex_BUID(name_of_roi):
     """Extracts case ID from the 'INFO_NameOfRoi' field of the
@@ -70,7 +59,6 @@ for dataset, parser in datasets.items():
             feature_names=features, lifex_out_file=lifex_raw_src,
             feature_prefix=feature_prefix,
             pattern_id_column=pattern_id_column,
-            image_filename_column=src_image_column,
             parser=parser
         )
             
