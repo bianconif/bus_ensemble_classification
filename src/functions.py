@@ -264,7 +264,8 @@ def pack_results(acc, sens, spec, n_test_samples, alpha, ci_method):
     return results_dict
     
 def retrieve_lifex_features(feature_names, lifex_out_file, 
-                            feature_prefix, pattern_id_column):
+                            feature_prefix, pattern_id_column,
+                            image_filename_column, parser):
     """Retrieves selected features from a LIFEx-generated output file
     
     Parameters
@@ -279,6 +280,11 @@ def retrieve_lifex_features(feature_names, lifex_out_file,
     pattern_id_column: str
         Name of the column that identifies the unique pattern id in the
         generated dataframe.
+    image_filename_column: str
+        Name of the column that identifies the name of the source images.
+    parser: object
+        The dataset-specific function that parses the `INFO_NameOfRoi`
+        column in the LIFEX-generated file
         
     Returns
     -------
@@ -288,52 +294,27 @@ def retrieve_lifex_features(feature_names, lifex_out_file,
     df = pd.read_csv(filepath_or_buffer=lifex_out_file)
     to_keep = [pattern_id_column]
     
-    #Add a pattern column
-    df[pattern_id_column] = df['INFO_NameOfRoi'].apply(
-        _extract_pattern_id_lifex)
+    #Add the pattern column
+    df[pattern_id_column] = df['INFO_NameOfRoi'].apply(parser)
     
     for feature_name in feature_names:
         for column in df.columns:
             if feature_name in column:
                 to_keep.append(column)    
                 break;
-
+            
     df_features = df[to_keep]
     
     #Prepend feature prefix to the feature names
     mapper = {feature: f'{feature_prefix}{feature}' for feature in
               to_keep if feature != pattern_id_column}
-    df_features.rename(columns=mapper, inplace=True)    
+    df_features.rename(columns=mapper, inplace=True)   
+    
+    #Add the image filename column
+    df_features.loc[image_filename_column] =\
+        df['INFO_SeriesPath'].apply(os.path.basename)    
     
     return df_features  
     
-def _extract_pattern_id_lifex(name_of_roi):
-    """Extracts case ID from the 'INFO_NameOfRoi' field of the
-    LIFEx-generated otuput file
-    
-    Parameters
-    ----------
-    name_of_roi : str
-        Value of the 'INFO_NameOfRoi' field in a LIFEx-generated output 
-        file.
-        
-    Returns
-    -------
-    pattern_id : int
-        The pattern id.
-    """
-    
-    #The left and right substrings
-    substr = (left := 'case', right := '_')
-    
-    #Get indices of the substrings
-    idx_left, idx_right = [name_of_roi.index(s) for s in substr]
-    
-    #Get the elements in between
-    case_id = str()
-    for idx in range(idx_left + len(left), idx_right):
-        case_id = case_id + name_of_roi[idx]        
-    
-    return int(case_id)
     
     
