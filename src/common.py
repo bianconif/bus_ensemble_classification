@@ -284,7 +284,7 @@ single_descriptors = [*morphological_features.keys(),
 #========================================
 #===== Combination of descriptors) ======
 #========================================
-combined_descriptors = {
+combined_descriptors = {      
     'ConvNeXt_base+Morphological+HOG': [
         'ConvNeXt_base', 'Morphological', 'HOG'],
     'ConvNeXt_base+Morphological+HOG+IH': [
@@ -328,14 +328,10 @@ scalers = {
 clfs = {
     'Rbf SVC':
     ClassifierWrapper(
-        classifier = SVC(kernel='rbf', gamma='auto', probability=True),
+        classifier = SVC(kernel='rbf', gamma='auto', probability=True,
+                         random_state=0),
         param_grid = {'C': [0.1, 1.0, 10.0, 100.0]}
-    ),
-    #'Logistic regression':
-    #ClassifierWrapper(
-        #classifier = LogisticRegression(),
-        #param_grid = {'C': [0.1, 1.0, 10.0, 100.0]}
-    #)     
+    ),   
 }
 #========================================
 #========================================
