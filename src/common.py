@@ -285,10 +285,15 @@ single_descriptors = [*morphological_features.keys(),
 #===== Combination of descriptors) ======
 #========================================
 combined_descriptors = {      
-    'ConvNeXt_base+Morphological+HOG': [
-        'ConvNeXt_base', 'Morphological', 'HOG'],
-    'ConvNeXt_base+Morphological+HOG+IH': [
-        'ConvNeXt_base', 'Morphological', 'HOG', 'intensity-histogram']    
+    'Best by class': [
+        'ConvNeXt_base', 'Morphological', 'HOG', 'intensity-histogram'],
+    'Top 3': [
+        'ConvNeXt_base', 'Swin_V2_s', 'Morphological'
+    ],
+    'Top 5': [
+        'ConvNeXt_base', 'Swin_V2_s', 'Morphological', 
+        'EfficientNet_V2_s', 'HOG'
+    ]    
 }
 
 fusion_methods = ['early-fusion', 'majority-voting', 'prod', 'sum']
