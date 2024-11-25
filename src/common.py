@@ -88,32 +88,12 @@ texture_descriptors = {
     DescriptorWrapper(
         descriptor=LBP(n_points=8, radius=1, method='nri_uniform'),
         mode='image'
-    ),
-    'LBP-8-1-ror':
-    DescriptorWrapper(
-        descriptor=LBP(n_points=8, radius=1, method='ror'),
-        mode='image'
-    ),
-    'LBP-8-1-uniform':
-    DescriptorWrapper(
-        descriptor=LBP(n_points=8, radius=1, method='uniform'),
-        mode='image'
-    ),    
+    ),  
     'LBP-8-2-nri-uniform':
     DescriptorWrapper(
         descriptor=LBP(n_points=8, radius=2, method='nri_uniform'),
         mode='image'
-    ),
-    'LBP-8-2-ror':
-    DescriptorWrapper(
-        descriptor=LBP(n_points=8, radius=2, method='ror'),
-        mode='image'
-    ),
-    'LBP-8-2-uniform':
-    DescriptorWrapper(
-        descriptor=LBP(n_points=8, radius=2, method='uniform'),
-        mode='image'
-    ),     
+    ),   
 }          
 
 cnn_descriptors = {
@@ -292,7 +272,7 @@ combined_descriptors = {
     ],
     'Top 5': [
         'ConvNeXt_base', 'Swin_V2_s', 'Morphological', 
-        'EfficientNet_V2_s', 'HOG'
+        'HOG', 'EfficientNet_V2_s' 
     ]    
 }
 
