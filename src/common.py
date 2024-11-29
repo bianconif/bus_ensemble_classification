@@ -5,6 +5,7 @@ from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 
 from torchvision.models import convnext_base, ConvNeXt_Base_Weights,\
+     densenet121, DenseNet121_Weights,\
      efficientnet_v2_s, EfficientNet_V2_S_Weights, mobilenet_v2,\
      MobileNet_V2_Weights, resnet50, ResNet50_Weights,\
      swin_v2_s, Swin_V2_S_Weights
@@ -104,6 +105,13 @@ cnn_descriptors = {
                                  layer='avgpool'),
         mode='image'
     ),
+    'DenseNet121': 
+    DescriptorWrapper(
+        descriptor=PreTrainedCNN(model=densenet121, 
+                                 weights=DenseNet121_Weights.DEFAULT, 
+                                 layer='adaptive_avg_pool2d'),
+        mode='image'
+    ),    
     'EfficientNet_V2_s': 
     DescriptorWrapper(
         descriptor=PreTrainedCNN(model=efficientnet_v2_s, 
@@ -266,13 +274,13 @@ single_descriptors = [*morphological_features.keys(),
 #========================================
 combined_descriptors = {      
     'Best by class': [
-        'ConvNeXt_base', 'Morphological', 'HOG', 'intensity-histogram'],
+        'DenseNet121', 'Morphological', 'HOG', 'intensity-histogram'],
     'Top 3': [
-        'ConvNeXt_base', 'Swin_V2_s', 'Morphological'
+        'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
     ],
     'Top 5': [
-        'ConvNeXt_base', 'Swin_V2_s', 'Morphological', 
-        'HOG', 'EfficientNet_V2_s' 
+        'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s', 'Morphological', 
+        'HOG' 
     ]    
 }
 

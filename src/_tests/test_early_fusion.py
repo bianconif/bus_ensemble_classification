@@ -17,6 +17,5 @@ for df_features in dfs_features:
 
 concatenated_features, new_feature_columns = concatenate_features(
     dfs_features, feature_columns, pattern_id_column)
-    
-a = 0
+
 

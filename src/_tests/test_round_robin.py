@@ -42,4 +42,3 @@ df_round_robin['Points'] = (-1 * df_round_robin['Losses']) +\
                            (1 * df_round_robin['Wins'])
 df_round_robin['Rank'] = df_round_robin['Points'].rank()
 df_round_robin.sort_values(by='Rank', ascending=False, inplace=True)
-a = 0
