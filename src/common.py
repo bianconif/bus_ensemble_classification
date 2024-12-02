@@ -271,20 +271,8 @@ single_descriptors = [*morphological_features.keys(),
 #========================================
 
 #========================================
-#===== Combination of descriptors) ======
+#===== Combination of descriptors= ======
 #========================================
-#combined_descriptors = {      
-    #'Best by class': [
-        #'DenseNet121', 'Morphological', 'HOG', 'intensity-histogram'],
-    #'Top 3': [
-        #'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
-    #],
-    #'Top 5': [
-        #'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s', 'Morphological', 
-        #'HOG' 
-    #]    
-#}
-
 combined_descriptors = [
     CombinedDescriptor(
         name='Best by class',
@@ -319,6 +307,20 @@ combined_descriptors = [
         descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
                      'Morphological', 'HOG'],
         weights=[104, 100, 97, 91, 86]
+    ),
+    CombinedDescriptor(
+        name='Top 7',
+        descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
+                     'Morphological', 'HOG', 'EfficientNet_V2_s',
+                     'ResNet50'],
+        weights=[1.0] * 7
+    ),
+    CombinedDescriptor(
+        name='Top 7 (weighted)',
+        descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
+                     'Morphological', 'HOG', 'EfficientNet_V2_s',
+                     'ResNet50'],
+        weights=[104, 100, 97, 91, 86, 85, 82]
     )    
 ]
 
