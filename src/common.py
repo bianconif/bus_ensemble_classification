@@ -10,8 +10,9 @@ from torchvision.models import convnext_base, ConvNeXt_Base_Weights,\
      MobileNet_V2_Weights, resnet50, ResNet50_Weights,\
      swin_v2_s, Swin_V2_S_Weights
 
-from classes import ClassifierWrapper, DCF, DescriptorWrapper, FDTA,\
-     Gabor, HOG, LBP, Morphological, PreTrainedCNN
+from classes import ClassifierWrapper, CombinedDescriptor, DCF, \
+     DescriptorWrapper, FDTA, Gabor, HOG, LBP, Morphological,\
+     PreTrainedCNN
 
 #Extent of the border around the bounding box
 border_around_bbox = 4
@@ -272,17 +273,54 @@ single_descriptors = [*morphological_features.keys(),
 #========================================
 #===== Combination of descriptors) ======
 #========================================
-combined_descriptors = {      
-    'Best by class': [
-        'DenseNet121', 'Morphological', 'HOG', 'intensity-histogram'],
-    'Top 3': [
-        'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
-    ],
-    'Top 5': [
-        'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s', 'Morphological', 
-        'HOG' 
-    ]    
-}
+#combined_descriptors = {      
+    #'Best by class': [
+        #'DenseNet121', 'Morphological', 'HOG', 'intensity-histogram'],
+    #'Top 3': [
+        #'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
+    #],
+    #'Top 5': [
+        #'DenseNet121', 'ConvNeXt_base', 'Swin_V2_s', 'Morphological', 
+        #'HOG' 
+    #]    
+#}
+
+combined_descriptors = [
+    CombinedDescriptor(
+        name='Best by class',
+        descriptors=['DenseNet121', 'Morphological', 'HOG', 
+                     'intensity-histogram'],
+        weights=[1.0] * 4
+    ),
+    CombinedDescriptor(
+        name='Best by class (weighted)',
+        descriptors=['DenseNet121', 'Morphological', 'HOG', 
+                     'intensity-histogram'],
+        weights=[104, 91, 86, 58]
+    ),
+    CombinedDescriptor(
+        name='Top 3',
+        descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s'],
+        weights=[1.0] * 3
+    ),
+    CombinedDescriptor(
+        name='Top 3 (weighted)',
+        descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s'],
+        weights=[104, 100, 97]
+    ),
+    CombinedDescriptor(
+        name='Top 5',
+        descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
+                     'Morphological', 'HOG'],
+        weights=[1.0] * 5
+    ),
+    CombinedDescriptor(
+        name='Top 5 (weighted)',
+        descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
+                     'Morphological', 'HOG'],
+        weights=[104, 100, 97, 91, 86]
+    )    
+]
 
 fusion_methods = ['early-fusion', 'majority-voting', 'prod', 'sum']
 #========================================

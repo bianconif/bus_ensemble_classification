@@ -170,9 +170,9 @@ for home, visitor in pairing_table:
             df_round_robin.loc[visitor]['Ties'] += 1
             df_round_robin.loc[home]['Ties'] += 1  
             
-df_round_robin['Points'] = (-1 * df_round_robin['Losses']) +\
-                           (0 * df_round_robin['Ties']) +\
-                           (1 * df_round_robin['Wins'])
+df_round_robin['Points'] = (0 * df_round_robin['Losses']) +\
+                           (1 * df_round_robin['Ties']) +\
+                           (2 * df_round_robin['Wins'])
 df_round_robin['Rank'] = df_round_robin['Points'].rank()
 df_round_robin.sort_values(by='Rank', ascending=False, inplace=True)
 df_round_robin.to_csv('ranking-of-single-descriptors.csv')

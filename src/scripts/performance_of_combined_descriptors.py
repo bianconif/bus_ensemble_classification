@@ -25,7 +25,7 @@ experimental_conditions = list(experimental_conditions)
 df_results = pd.DataFrame()
 
 for ec_idx, experimental_condition in enumerate(experimental_conditions):
-    record = {'Descriptor': experimental_condition[0],
+    record = {'Descriptor': experimental_condition[0].name,
               'Fusion method': experimental_condition[1],
               'Train': experimental_condition[2]['train'],
               'Test': experimental_condition[2]['test'],
@@ -51,8 +51,7 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
         #The feature files
         feature_srcs = [
             f'{features_root_folder}/{record["Train"]}/{src}.csv' for 
-            src in combined_descriptors[experimental_condition[0]]
-        ]
+            src in experimental_condition[0].descriptors]
         
         #The metadata and splits file
         metadata_src = (f'{datasets_root}/{record["Train"]}'
@@ -77,6 +76,7 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
             feature_columns_list=feature_columns_list,
             binary_output=True, 
             binary_class_labels=binary_class_labels,
+            weights=experimental_condition[0].weights,
             **common_params
         )
         
@@ -96,12 +96,10 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
         
         train_feature_srcs = [
             f'{features_root_folder}/{record["Train"]}/{src}.csv' for 
-            src in combined_descriptors[experimental_condition[0]]
-        ]     
+            src in experimental_condition[0].descriptors]
         test_feature_srcs = [
             f'{features_root_folder}/{record["Test"]}/{src}.csv' for 
-            src in combined_descriptors[experimental_condition[0]]
-        ]         
+            src in experimental_condition[0].descriptors]
         
         train_metadata_src = (f'{datasets_root}/{record["Train"]}'
                               f'{datasets_metadata_file}')
@@ -136,6 +134,7 @@ for ec_idx, experimental_condition in enumerate(experimental_conditions):
             df_test_metadata=df_test_metadata,
             feature_columns_list=feature_columns_list, 
             fusion_method=experimental_condition[1], 
+            weights=experimental_condition[0].weights,
             **common_params)            
                  
         #Create result record        

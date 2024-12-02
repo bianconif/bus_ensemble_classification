@@ -49,6 +49,24 @@ class ClassifierWrapper:
     """
     classifier: object
     param_grid: dict
+    
+@dataclass    
+class CombinedDescriptor:
+    """A combination of descriptors.
+    
+    Attributes
+    ----------
+    name: str
+        The name of the combined descriptor.
+    descriptors: list of str (N)
+        Names of the individual descriptors that make up the combined
+        descriptor.
+    weights: list of float (N)
+        The weights to be assigned to each individual descriptor.
+    """
+    name: str
+    descriptors: list
+    weights: list
        
 class DCF:
     """Computes features based on discrete cosine filters"""
