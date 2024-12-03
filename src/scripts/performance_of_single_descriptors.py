@@ -11,7 +11,8 @@ from common import datasets_root, datasets_metadata_file, n_splits,\
      features_root_folder, train_test_split_method
 from common import binary_class_labels, class_column, feature_prefix,\
      pattern_id_column
-from common import acc_ci_alpha, acc_ci_method
+from common import acc_ci_alpha, acc_ci_method, best_res_single,\
+     complete_res_single
 from functions import get_feature_columns, pack_results
 
 experimental_conditions = product(
@@ -129,13 +130,13 @@ for name, grp in df_results.groupby(by=['Descriptor', 'Train', 'Test']):
                                         df_results.loc[max_acc_idxs]),
                                        )
     
-df_results.to_csv('complete-performance-single-descriptors.csv')
-df_best_by_feature_set.to_csv('best-performance-single-descriptors.csv')
+df_results.to_csv(complete_res_single)
+df_best_by_feature_set.to_csv(best_res_single)
 
 #=========================================================
 #=============== Ranking of descriptors ==================
 #=========================================================
-df_pruned = pd.read_csv('best-performance-single-descriptors.csv')
+df_pruned = pd.read_csv(best_res_single)
 subset = ['Descriptor', 'Train', 'Test']
 df_pruned = df_pruned.drop_duplicates(subset=subset)
 df_pruned.set_index(keys=subset, inplace=True)

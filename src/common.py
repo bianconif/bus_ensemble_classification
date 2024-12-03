@@ -47,6 +47,12 @@ class_column = 'Malignancy'
 #classes respectively
 binary_class_labels = ('1','0')
 
+#Store the LaTeX files here.
+latex_folder = 'LaTeX'
+
+#Results file
+complete_res_single = 'complete-performance-single-descriptors.csv'
+best_res_single = 'best-performance-single-descriptors.csv'
 #========================================
 #===== Feature sets (descriptors) =======
 #========================================

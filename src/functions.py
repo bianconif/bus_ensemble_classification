@@ -310,5 +310,3 @@ def retrieve_lifex_features(feature_names, lifex_out_file,
         
     return df_features  
     
-    
-    

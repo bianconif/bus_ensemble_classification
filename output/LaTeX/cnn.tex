@@ -1,0 +1,35 @@
+\begin{tabular}{lllccc}\\ 
+\toprule
+Descriptor & Train &Test & Acc. & Sens. &Spec.\\ 
+\midrule
+\multirow{4}{*}{ConvNeXt_base} & BUID & BUID & 79.3 [73.62--84.05] & 76.8 & 82.6\\ 
+ & BUID & BrEaST & 77.0 [70.86--81.72] & 64.3 & 85.1\\ 
+ & BrEaST & BUID & 78.9 [73.08--83.21] & 69.1 & 89.9\\ 
+ & BrEaST & BrEaST & 77.5 [71.81--82.13] & 67.4 & 83.8\\ 
+\midrule
+\multirow{4}{*}{DenseNet121} & BUID & BUID & 79.8 [74.08--84.43] & 75.2 & 86.5\\ 
+ & BUID & BrEaST & 77.4 [71.32--82.11] & 58.2 & 89.6\\ 
+ & BrEaST & BUID & 78.0 [72.23--82.49] & 72.4 & 84.4\\ 
+ & BrEaST & BrEaST & 79.0 [73.50--83.56] & 67.4 & 86.4\\ 
+\midrule
+\multirow{4}{*}{EfficientNet_V2_s} & BUID & BUID & 73.3 [67.22--78.57] & 70.4 & 76.9\\ 
+ & BUID & BrEaST & 77.4 [71.32--82.11] & 57.1 & 90.3\\ 
+ & BrEaST & BUID & 71.1 [65.14--76.29] & 53.7 & 90.8\\ 
+ & BrEaST & BrEaST & 74.2 [68.46--79.23] & 57.1 & 85.1\\ 
+\midrule
+\multirow{4}{*}{MobileNet_V2} & BUID & BUID & 73.3 [66.77--78.17] & 62.1 & 87.8\\ 
+ & BUID & BrEaST & 75.0 [69.04--80.15] & 50.0 & 90.9\\ 
+ & BrEaST & BUID & 62.9 [56.58--68.44] & 35.8 & 93.6\\ 
+ & BrEaST & BrEaST & 72.3 [66.38--77.40] & 46.9 & 88.3\\ 
+\midrule
+\multirow{4}{*}{ResNet50} & BUID & BUID & 72.9 [66.77--78.17] & 62.7 & 85.5\\ 
+ & BUID & BrEaST & 77.0 [70.86--81.72] & 59.2 & 88.3\\ 
+ & BrEaST & BUID & 66.8 [60.63--72.20] & 44.7 & 91.7\\ 
+ & BrEaST & BrEaST & 73.9 [68.04--78.86] & 47.9 & 90.3\\ 
+\midrule
+\multirow{4}{*}{Swin_V2_s} & BUID & BUID & 75.9 [69.95--80.93] & 73.7 & 81.1\\ 
+ & BUID & BrEaST & 77.4 [71.32--82.11] & 75.5 & 78.6\\ 
+ & BrEaST & BUID & 75.4 [69.71--80.32] & 66.7 & 85.3\\ 
+ & BrEaST & BrEaST & 78.2 [72.66--82.85] & 69.4 & 83.8\\ 
+\bottomrule
+\end{tabular}
