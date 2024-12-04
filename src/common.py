@@ -51,8 +51,9 @@ binary_class_labels = ('1','0')
 latex_folder = 'LaTeX'
 
 #Results file
-complete_res_single = 'complete-performance-single-descriptors.csv'
-best_res_single = 'best-performance-single-descriptors.csv'
+complete_res_single_file = 'complete-performance-single-descriptors.csv'
+best_res_single_file = 'best-performance-single-descriptors.csv'
+ranking_single_file = 'ranking-of-single-descriptors.csv'
 #========================================
 #===== Feature sets (descriptors) =======
 #========================================

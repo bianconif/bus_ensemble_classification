@@ -11,8 +11,8 @@ from common import datasets_root, datasets_metadata_file, n_splits,\
      features_root_folder, train_test_split_method
 from common import binary_class_labels, class_column, feature_prefix,\
      pattern_id_column
-from common import acc_ci_alpha, acc_ci_method, best_res_single,\
-     complete_res_single
+from common import acc_ci_alpha, acc_ci_method, best_res_single_file,\
+     complete_res_single_file, ranking_single_file
 from functions import get_feature_columns, pack_results
 
 experimental_conditions = product(
@@ -130,13 +130,13 @@ for name, grp in df_results.groupby(by=['Descriptor', 'Train', 'Test']):
                                         df_results.loc[max_acc_idxs]),
                                        )
     
-df_results.to_csv(complete_res_single)
-df_best_by_feature_set.to_csv(best_res_single)
+df_results.to_csv(complete_res_single_file)
+df_best_by_feature_set.to_csv(best_res_single_file)
 
 #=========================================================
 #=============== Ranking of descriptors ==================
 #=========================================================
-df_pruned = pd.read_csv(best_res_single)
+df_pruned = pd.read_csv(best_res_single_file)
 subset = ['Descriptor', 'Train', 'Test']
 df_pruned = df_pruned.drop_duplicates(subset=subset)
 df_pruned.set_index(keys=subset, inplace=True)
@@ -174,9 +174,9 @@ for home, visitor in pairing_table:
 df_round_robin['Points'] = (0 * df_round_robin['Losses']) +\
                            (1 * df_round_robin['Ties']) +\
                            (2 * df_round_robin['Wins'])
-df_round_robin['Rank'] = df_round_robin['Points'].rank()
-df_round_robin.sort_values(by='Rank', ascending=False, inplace=True)
-df_round_robin.to_csv('ranking-of-single-descriptors.csv')
+df_round_robin['Rank'] = df_round_robin['Points'].rank(ascending=False)
+df_round_robin.sort_values(by='Rank', ascending=True, inplace=True)
+df_round_robin.to_csv(ranking_single_file)
 #=========================================================
 #=========================================================
 #=========================================================

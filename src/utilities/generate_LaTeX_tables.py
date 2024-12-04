@@ -1,8 +1,71 @@
 import os
 import pandas as pd
 
-from common import best_res_single, latex_folder, texture_descriptors,\
-     cnn_descriptors
+from common import best_res_single_file, latex_folder, texture_descriptors,\
+     cnn_descriptors, ranking_single_file
+
+def latex_ranking_table(df_ranking, out_file,
+                        descriptor_col_in='Descriptor',
+                        wins_col_in='Wins',
+                        losses_col_in='Losses',
+                        ties_col_in='Ties',
+                        points_col_in='Points',
+                        rank_col_in='Rank'
+                        ):
+    """LaTeX table showing the ranking of individual descriptors
+    
+    Parameters
+    ----------
+    df_results: pd.DataFrame
+        The dataframe containing the results.
+    out_file: str
+        Relative or absolute path the LaTeX output file.
+    descriptor_col_in: str
+        Name of the column storing the name of the descriptor.
+    wins_col_in: str
+        Name of the column storing the number of wins.
+    losses_col_in: str
+        Name of the column storing the number of losses.
+    ties_col_in: str
+        Name of the column storing the number of ties.
+    points_col_in: str
+        Name of the column storing the number of points.
+    rank_col_in: str
+        Name of the column storing the rank.
+        
+    Returns
+    -------
+    None
+    """ 
+    
+    fp_out_file = open(out_file, 'w')
+    
+    #Header
+    fp_out_file.write('\\begin{tabular}{llllll}\\\\ \n')
+    fp_out_file.write('\\toprule\n')
+    fp_out_file.write(f'{descriptor_col_in} & {wins_col_in} & ')
+    fp_out_file.write(f'{losses_col_in} & {ties_col_in} & {points_col_in} & ')
+    fp_out_file.write(f'{rank_col_in}\\\\ \n')
+    fp_out_file.write('\\midrule\n')    
+    
+    #Body
+    for _, row in df_ranking.iterrows():
+        
+        descriptor, wins, losses, ties, points, rank =\
+            row[[
+                descriptor_col_in, wins_col_in, losses_col_in, 
+                ties_col_in, points_col_in, rank_col_in
+            ]]
+        
+        fp_out_file.write(f'{descriptor} & {wins} & {losses} & {ties} & '
+                          f'{points:d} & {rank}\\\\ \n')
+        
+    #Footer
+    fp_out_file.write('\\bottomrule\n')
+    fp_out_file.write('\\end{tabular}\n')
+    
+    
+    fp_out_file.close()
 
 def latex_results_table_by_descriptor(df_results, 
                                       out_file,
@@ -18,10 +81,10 @@ def latex_results_table_by_descriptor(df_results,
     
     Parameters
     ----------
-    out_file: str
-        Relative or absolute path the LaTeX output file.
     df_results: pd.DataFrame
         The dataframe containing the results.
+    out_file: str
+        Relative or absolute path the LaTeX output file.
     descriptor_col: str
         Name of the column storing the name of the descriptor.
     acc_col_in: str
@@ -99,7 +162,7 @@ if not os.path.isdir(latex_folder):
 
     
 #Read the results
-df_best_res_single = pd.read_csv(best_res_single)
+df_best_res_single = pd.read_csv(best_res_single_file)
     
 #Results table with morphological and intensity-based features
 df_slice = df_best_res_single[df_best_res_single[descriptor_col_in].\
@@ -127,4 +190,11 @@ latex_results_table_by_descriptor(
     df_results=df_slice, 
     out_file=f'{latex_folder}/cnn.tex',
     descriptor_col_in=descriptor_col_in
+)
+
+#Ranking table
+df_ranking = pd.read_csv(ranking_single_file)
+latex_ranking_table(
+    df_ranking, 
+    out_file=f'{latex_folder}/ranking.tex'
 )
