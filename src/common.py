@@ -53,6 +53,7 @@ latex_folder = 'LaTeX'
 #Results file
 complete_res_single_file = 'complete-performance-single-descriptors.csv'
 best_res_single_file = 'best-performance-single-descriptors.csv'
+best_res_combined_file = 'best-performance-combined-descriptors.csv'
 ranking_single_file = 'ranking-of-single-descriptors.csv'
 #========================================
 #===== Feature sets (descriptors) =======

@@ -1,0 +1,38 @@
+\begin{tabular}{llllccc}\\ 
+\toprule
+Descriptor & Fusion method & Train &Test & Acc. & Sens. &Spec.\\ 
+\midrule
+DenseNet121 & & BUID & BUID & 79.8 [74.08--84.43] & 75.2 & 86.5\\ 
+\midrule
+Best by class (weighted) & prod & BUID & BUID & 82.3 [76.41--86.35] & 84.6 & 79.7\\ 
+Best by class (weighted) & sum & BUID & BUID & 82.3 [76.41--86.35] & 84.6 & 79.7\\ 
+Best by class & sum & BUID & BUID & 81.9 [75.94--85.96] & 84.5 & 78.8\\ 
+Top 3 & majority-voting & BUID & BUID & 81.9 [75.94--85.96] & 80.5 & 83.4\\ 
+\midrule
+\midrule
+DenseNet121 & & BUID & BrEaST & 77.4 [71.32--82.11] & 58.2 & 89.6\\ 
+\midrule
+Top 7 & prod & BUID & BrEaST & 81.7 [76.49--86.05] & 76.5 & 85.1\\ 
+Top 5 & sum & BUID & BrEaST & 81.3 [76.06--85.70] & 79.6 & 82.5\\ 
+Top 7 (weighted) & prod & BUID & BrEaST & 81.0 [75.63--85.34] & 75.5 & 84.4\\ 
+Top 7 (weighted) & sum & BUID & BrEaST & 81.0 [75.63--85.34] & 74.5 & 85.1\\ 
+\midrule
+\midrule
+ConvNeXt_base & & BrEaST & BUID & 78.9 [73.08--83.21] & 69.1 & 89.9\\ 
+\midrule
+Top 5 & prod & BrEaST & BUID & 81.5 [75.94--85.96] & 77.2 & 86.2\\ 
+Top 5 (weighted) & prod & BrEaST & BUID & 81.0 [75.48--85.58] & 75.6 & 87.2\\ 
+Top 3 & early-fusion & BrEaST & BUID & 80.6 [75.01--85.20] & 72.4 & 89.9\\ 
+Top 3 (weighted) & early-fusion & BrEaST & BUID & 80.6 [75.01--85.20] & 72.4 & 89.9\\ 
+\midrule
+\midrule
+DenseNet121 & & BrEaST & BrEaST & 79.0 [73.50--83.56] & 67.4 & 86.4\\ 
+\midrule
+Top 5 & sum & BrEaST & BrEaST & 81.4 [76.06--85.70] & 71.4 & 87.7\\ 
+Top 5 (weighted) & prod & BrEaST & BrEaST & 81.4 [76.06--85.70] & 71.4 & 87.7\\ 
+Top 5 (weighted) & sum & BrEaST & BrEaST & 81.4 [76.06--85.70] & 71.4 & 87.7\\ 
+Top 7 (weighted) & sum & BrEaST & BrEaST & 80.6 [75.20--84.99] & 69.3 & 87.7\\ 
+\midrule
+\midrule
+\bottomrule
+\end{tabular}
