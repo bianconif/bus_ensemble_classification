@@ -24,7 +24,7 @@ sns.stripplot(data=df_combined, y='Acc.', x='Descriptor',
               hue='Fusion method', jitter=0.2, edgecolor='auto', 
               linewidth=1, ax=ax)
 
-title = 'Performance of fused models'
+title = 'Performance of ensemble models'
 subtitle = 'Grouped by aggregation of feature sets' 
 set_title_and_subtitle(fig=fig, title=title, subtitle=subtitle,
                        alignment='left', h_offset=25)
@@ -53,7 +53,7 @@ sns.stripplot(data=df_combined, y='Acc.', x='Fusion method',
               hue='Descriptor', jitter=0.2, edgecolor='auto', 
               linewidth=1, ax=ax)
 
-title = 'Performance of fused models'
+title = 'Performance of ensemble models'
 subtitle = 'Grouped by fusion method' 
 set_title_and_subtitle(fig=fig, title=title, subtitle=subtitle,
                        alignment='left', h_offset=25)
