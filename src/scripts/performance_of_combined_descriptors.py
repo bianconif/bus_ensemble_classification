@@ -8,7 +8,7 @@ from ml_routines.src.performance_estimation import\
 from ml_routines.src.combining import concatenate_features
 
 from common import clfs, scalers, testing_conditions, fusion_methods,\
-     combined_descriptors
+     combined_descriptors, complete_res_comb_file, best_res_combined_file
 from common import datasets_root, datasets_metadata_file, n_splits,\
      features_root_folder, train_test_split_method
 from common import binary_class_labels, class_column, feature_prefix,\
@@ -164,8 +164,8 @@ for name, grp in df_results.groupby(by=['Descriptor', 'Train', 'Test']):
                                             df_results.loc[max_acc_idxs]),
                                            )
         
-df_results.to_csv('complete-performance-combined-descriptors.csv')
-df_best_by_feature_set.to_csv('best-performance-combined-descriptors.csv')
+df_results.to_csv(complete_res_comb_file)
+df_best_by_feature_set.to_csv(best_res_combined_file)
     
 print('Complete results')
 print(tabulate(df_results, headers='keys', floatfmt="3.1f"))
