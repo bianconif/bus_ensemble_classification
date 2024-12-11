@@ -25,7 +25,7 @@ sns.stripplot(data=df_combined, y='Acc.', x='Descriptor',
               linewidth=1, ax=ax)
 
 title = 'Performance of fused models'
-subtitle = 'Grouped by combination of descriptors' 
+subtitle = 'Grouped by aggregation of feature sets' 
 set_title_and_subtitle(fig=fig, title=title, subtitle=subtitle,
                        alignment='left', h_offset=25)
 
@@ -34,7 +34,7 @@ ax.tick_params(axis='x', labelrotation=90)
 ax.grid(visible=True, axis='y')
 ax.spines[['top', 'right', 'left']].set_visible(False)
 
-fig.savefig(f'{charts_folder}/by-combined-descriptor.png', 
+fig.savefig(f'{charts_folder}/by-aggregation-of-feature-sets.png', 
             dpi=450, bbox_inches='tight')
 #===================================================================
 #===================================================================
