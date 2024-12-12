@@ -50,7 +50,7 @@ Execute the `src/scripts/performance_of_combined_descriptors.py` to estimate the
 - torch 2.2.0+cu118
 - Torchvision 0.17.0+cu118
 
-## Credits {#credits}
+## Credits
 - The images contained in the `data/datasets/BrEaST/images` folder are derived from the [Curated benchmark dataset for ultrasound based breast lesion analysis](https://www.cancerimagingarchive.net/collection/breast-lesions-usg/) [1,2] (available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))
 - The images contained in the `data/datasets/BUID/images` folder are derived from the [Breast Ultrasound Image Database](https://qamebi.com/breast-ultrasound-images-database/) [3-5] (license unspecified).
 
