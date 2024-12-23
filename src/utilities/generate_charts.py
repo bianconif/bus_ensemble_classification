@@ -24,6 +24,8 @@ sns.stripplot(data=df_combined, y='Acc.', x='Descriptor',
               hue='Fusion method', jitter=0.2, edgecolor='auto', 
               linewidth=1, ax=ax)
 
+#sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
+
 title = 'Performance of ensemble models'
 subtitle = 'Grouped by aggregation of feature sets' 
 set_title_and_subtitle(fig=fig, title=title, subtitle=subtitle,
@@ -52,6 +54,8 @@ sns.boxplot(data=df_combined, y='Acc.', x='Fusion method',
 sns.stripplot(data=df_combined, y='Acc.', x='Fusion method',
               hue='Descriptor', jitter=0.2, edgecolor='auto', 
               linewidth=1, ax=ax)
+
+#sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
 
 title = 'Performance of ensemble models'
 subtitle = 'Grouped by fusion method' 

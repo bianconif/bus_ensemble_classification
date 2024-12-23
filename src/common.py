@@ -336,7 +336,7 @@ combined_descriptors = [
     )    
 ]
 
-fusion_methods = ['early-fusion', 'majority-voting', 'prod', 'sum']
+fusion_methods = ['feats-concat', 'majority-voting', 'prod', 'sum']
 #========================================
 #========================================
 #========================================
