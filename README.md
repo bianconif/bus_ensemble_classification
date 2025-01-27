@@ -1,8 +1,8 @@
-# Combining conventional and CNN-based features for discriminating benign vs. malignant lesions on breast ultrasound images: An evaluation of ensemble schemes
+# Experimental assessment of conventional features, CNN-based features and ensemble schemes for discriminating benign vs. malignant lesions on breast ultrasound images
 
-### by [Muhammah U. Khan](https://www.linkedin.com/in/usama-khan-0a509211a/), [Francesco Bianconi](www.bianconif.net), [Hongbo Du](https://www.buckingham.ac.uk/directory/mr-hongbo-du/) and [Sabah Jassim](https://www.buckingham.ac.uk/directory/professor-sabah-jassim/)
+### by [Francesco Bianconi](www.bianconif.net), [Muhammah U. Khan](https://www.linkedin.com/in/usama-khan-0a509211a/), [Hongbo Du](https://www.buckingham.ac.uk/directory/mr-hongbo-du/) and [Sabah Jassim](https://www.buckingham.ac.uk/directory/professor-sabah-jassim/)
 
-### Submitted to...
+### Submitted to [Ultrasonic Imaging](https://journals.sagepub.com/home/UIX)
 
 ## Companion website
 
