@@ -41,8 +41,26 @@ def _extract_pattern_id_lifex_BUID(name_of_roi):
     """    
     return name_of_roi.rstrip('_mask')
 
+def _extract_pattern_id_lifex_BUS_UCLM(name_of_roi):
+    """Extracts case ID from the 'INFO_NameOfRoi' field of the
+    LIFEx-generated otuput file
+    
+    Parameters
+    ----------
+    name_of_roi : str
+        Value of the 'INFO_NameOfRoi' field in a LIFEx-generated output 
+        file.
+        
+    Returns
+    -------
+    pattern_id : str
+        The pattern id.
+    """    
+    return name_of_roi.split('_', 1)[0]
+
 datasets = {'BrEaST': _extract_pattern_id_lifex_BrEaST,
-            'BUID': _extract_pattern_id_lifex_BUID}
+            'BUID': _extract_pattern_id_lifex_BUID,
+            'BUS-UCLM': _extract_pattern_id_lifex_BUS_UCLM}
 
 for dataset, parser in datasets.items():
     
