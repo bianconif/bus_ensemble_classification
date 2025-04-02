@@ -296,7 +296,7 @@ combined_descriptors = [
         name='Best by class (weighted)',
         descriptors=['DenseNet121', 'Morphological', 'HOG', 
                      'intensity-histogram'],
-        weights=[104, 91, 86, 58]
+        weights=[157, 141, 124, 92]
     ),
     CombinedDescriptor(
         name='Top 3',
@@ -306,24 +306,24 @@ combined_descriptors = [
     CombinedDescriptor(
         name='Top 3 (weighted)',
         descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s'],
-        weights=[104, 100, 97]
+        weights=[157, 156, 150]
     ),
     CombinedDescriptor(
         name='Top 5',
         descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
-                     'Morphological', 'HOG'],
+                     'Morphological', 'EfficientNet_V2_s'],
         weights=[1.0] * 5
     ),
     CombinedDescriptor(
         name='Top 5 (weighted)',
         descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
-                     'Morphological', 'HOG'],
-        weights=[104, 100, 97, 91, 86]
+                     'Morphological', 'EfficientNet_V2_s'],
+        weights=[157, 156, 150, 141, 132]
     ),
     CombinedDescriptor(
         name='Top 7',
         descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
-                     'Morphological', 'HOG', 'EfficientNet_V2_s',
+                     'Morphological', 'EfficientNet_V2_s', 'HOG', 
                      'ResNet50'],
         weights=[1.0] * 7
     ),
@@ -332,7 +332,7 @@ combined_descriptors = [
         descriptors=['DenseNet121', 'ConvNeXt_base', 'Swin_V2_s',
                      'Morphological', 'HOG', 'EfficientNet_V2_s',
                      'ResNet50'],
-        weights=[104, 100, 97, 91, 86, 85, 82]
+        weights=[157, 156, 150, 141, 132, 124, 119]
     )    
 ]
 
