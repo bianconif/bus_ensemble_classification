@@ -363,7 +363,9 @@ testing_conditions = [
     {'train': datasets[0], 'test': datasets[0]},
     {'train': datasets[0], 'test': datasets[1]},
     {'train': datasets[1], 'test': datasets[1]},
-    {'train': datasets[1], 'test': datasets[0]}
+    {'train': datasets[1], 'test': datasets[0]},
+    {'train': datasets[0], 'test': datasets[2]},
+    {'train': datasets[1], 'test': datasets[2]}
 ]
 
 scalers = {
