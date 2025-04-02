@@ -344,7 +344,7 @@ fusion_methods = ['feats-concat', 'majority-voting', 'prod', 'sum']
 #========================================
 #============= Datasets =================
 #========================================
-datasets = ['BrEaST', 'BUID']
+datasets = ['BrEaST', 'BUID', 'BUS-UCLM']
 datasets_root = '../data/datasets'
 datasets_image_subfolder = 'images'
 datasets_metadata_file = '/metadata/metadata.csv'
