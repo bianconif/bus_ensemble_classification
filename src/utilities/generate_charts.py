@@ -35,6 +35,7 @@ ax.set(**{'xlabel': None, 'ylabel': 'Accuracy (%)'})
 ax.tick_params(axis='x', labelrotation=90)
 ax.grid(visible=True, axis='y')
 ax.spines[['top', 'right', 'left']].set_visible(False)
+ax.set_ylim(bottom=60, top=90)
 
 fig.savefig(f'{charts_folder}/by-aggregation-of-feature-sets.png', 
             dpi=450, bbox_inches='tight')
@@ -64,6 +65,7 @@ set_title_and_subtitle(fig=fig, title=title, subtitle=subtitle,
 
 ax.set(**{'xlabel': None, 'ylabel': 'Accuracy (%)'})
 ax.tick_params(axis='x', labelrotation=90)
+ax.set_ylim(bottom=60, top=90)
 ax.grid(visible=True, axis='y')
 ax.spines[['top', 'right', 'left']].set_visible(False)
 
