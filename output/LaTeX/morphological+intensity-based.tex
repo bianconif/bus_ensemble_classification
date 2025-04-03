@@ -2,19 +2,25 @@
 \toprule
 Descriptor & Train &Test & Acc. & Sens. &Spec.\\ 
 \midrule
-\multirow{4}{*}{Morphological} & BUID & BUID & 78.0 [72.24--82.89] & 76.0 & 80.4\\ 
+\multirow{6}{*}{Morphological} & BUID & BUID & 78.0 [72.24--82.89] & 76.0 & 80.4\\ 
+ & BUID & BUS-UCLM & 79.7 [73.62--84.05] & 55.3 & 92.0\\ 
  & BUID & BrEaST & 77.0 [70.86--81.72] & 75.5 & 77.9\\ 
  & BrEaST & BUID & 71.6 [65.55--76.66] & 64.2 & 79.8\\ 
+ & BrEaST & BUS-UCLM & 80.8 [75.01--85.20] & 51.1 & 95.7\\ 
  & BrEaST & BrEaST & 73.1 [67.21--78.13] & 51.9 & 86.4\\ 
 \midrule
-\multirow{4}{*}{intensity-based} & BUID & BUID & 62.4 [55.67--68.07] & 74.7 & 48.8\\ 
+\multirow{6}{*}{intensity-based} & BUID & BUID & 62.4 [55.67--68.07] & 74.7 & 48.8\\ 
+ & BUID & BUS-UCLM & 61.6 [54.80--67.25] & 37.2 & 73.8\\ 
  & BUID & BrEaST & 57.1 [50.46--63.11] & 48.0 & 63.0\\ 
  & BrEaST & BUID & 60.3 [54.16--66.16] & 37.4 & 86.2\\ 
+ & BrEaST & BUS-UCLM & 72.2 [65.87--77.38] & 40.4 & 88.2\\ 
  & BrEaST & BrEaST & 69.9 [63.90--75.18] & 52.3 & 81.2\\ 
 \midrule
-\multirow{4}{*}{intensity-histogram} & BUID & BUID & 65.5 [59.19--71.34] & 73.1 & 56.7\\ 
+\multirow{6}{*}{intensity-histogram} & BUID & BUID & 65.5 [59.19--71.34] & 73.1 & 56.7\\ 
+ & BUID & BUS-UCLM & 65.1 [58.75--70.93] & 14.9 & 90.4\\ 
  & BUID & BrEaST & 65.9 [59.19--71.34] & 28.6 & 89.6\\ 
  & BrEaST & BUID & 54.7 [48.20--60.40] & 22.8 & 90.8\\ 
+ & BrEaST & BUS-UCLM & 78.6 [72.70--83.27] & 70.2 & 82.9\\ 
  & BrEaST & BrEaST & 66.7 [60.22--71.83] & 49.0 & 78.0\\ 
 \bottomrule
 \end{tabular}

@@ -4,34 +4,50 @@ Descriptor & Fusion method & Train &Test & Acc. & Sens. &Spec.\\
 \midrule
 DenseNet121 & & BUID & BUID & 79.8 [74.08--84.43] & 75.2 & 86.5\\ 
 \midrule
-Best by class (weighted) & prod & BUID & BUID & 82.3 [76.41--86.35] & 84.6 & 79.7\\ 
 Best by class (weighted) & sum & BUID & BUID & 82.3 [76.41--86.35] & 84.6 & 79.7\\ 
 Best by class & sum & BUID & BUID & 81.9 [75.94--85.96] & 84.5 & 78.8\\ 
 Top 3 & majority-voting & BUID & BUID & 81.9 [75.94--85.96] & 80.5 & 83.4\\ 
+Top 3 (weighted) & majority-voting & BUID & BUID & 81.9 [75.94--85.96] & 80.5 & 83.4\\ 
+\midrule
+\midrule
+Swin_V2_s & & BUID & BUS-UCLM & 84.0 [78.29--87.86] & 78.7 & 86.6\\ 
+\midrule
+Top 5 & sum & BUID & BUS-UCLM & 87.5 [83.14--90.94] & 86.2 & 88.2\\ 
+Top 5 (weighted) & prod & BUID & BUS-UCLM & 87.2 [82.74--90.63] & 85.1 & 88.2\\ 
+Top 5 (weighted) & sum & BUID & BUS-UCLM & 87.2 [82.74--90.63] & 86.2 & 87.7\\ 
+Top 7 & prod & BUID & BUS-UCLM & 86.5 [81.95--90.02] & 74.5 & 92.5\\ 
 \midrule
 \midrule
 DenseNet121 & & BUID & BrEaST & 77.4 [71.32--82.11] & 58.2 & 89.6\\ 
 \midrule
 Top 7 & prod & BUID & BrEaST & 81.7 [76.49--86.05] & 76.5 & 85.1\\ 
-Top 5 & sum & BUID & BrEaST & 81.3 [76.06--85.70] & 79.6 & 82.5\\ 
-Top 7 (weighted) & prod & BUID & BrEaST & 81.0 [75.63--85.34] & 75.5 & 84.4\\ 
-Top 7 (weighted) & sum & BUID & BrEaST & 81.0 [75.63--85.34] & 74.5 & 85.1\\ 
+Best by class (weighted) & prod & BUID & BrEaST & 81.0 [75.63--85.34] & 70.4 & 87.7\\ 
+Top 5 & majority-voting & BUID & BrEaST & 81.0 [75.63--85.34] & 70.4 & 87.7\\ 
+Top 5 (weighted) & majority-voting & BUID & BrEaST & 81.0 [75.63--85.34] & 70.4 & 87.7\\ 
 \midrule
 \midrule
 ConvNeXt_base & & BrEaST & BUID & 78.9 [73.08--83.21] & 69.1 & 89.9\\ 
 \midrule
-Top 5 & prod & BrEaST & BUID & 81.5 [75.94--85.96] & 77.2 & 86.2\\ 
-Top 5 (weighted) & prod & BrEaST & BUID & 81.0 [75.48--85.58] & 75.6 & 87.2\\ 
-Top 3 & feats-concat & BrEaST & BUID & 80.6 [75.01--85.20] & 72.4 & 89.9\\ 
-Top 3 (weighted) & feats-concat & BrEaST & BUID & 80.6 [75.01--85.20] & 72.4 & 89.9\\ 
+Top 5 (weighted) & prod & BrEaST & BUID & 81.5 [75.94--85.96] & 71.5 & 92.7\\ 
+Top 5 (weighted) & sum & BrEaST & BUID & 81.5 [75.94--85.96] & 71.5 & 92.7\\ 
+Top 5 & prod & BrEaST & BUID & 81.0 [75.48--85.58] & 70.7 & 92.7\\ 
+Top 5 & sum & BrEaST & BUID & 81.0 [75.48--85.58] & 70.7 & 92.7\\ 
+\midrule
+\midrule
+DenseNet121 & & BrEaST & BUS-UCLM & 83.6 [78.29--87.86] & 67.0 & 92.0\\ 
+\midrule
+Top 5 & majority-voting & BrEaST & BUS-UCLM & 87.2 [82.74--90.63] & 74.5 & 93.6\\ 
+Top 5 (weighted) & majority-voting & BrEaST & BUS-UCLM & 87.2 [82.74--90.63] & 74.5 & 93.6\\ 
+Top 7 & majority-voting & BrEaST & BUS-UCLM & 86.5 [81.95--90.02] & 68.1 & 95.7\\ 
+Top 7 (weighted) & majority-voting & BrEaST & BUS-UCLM & 86.5 [81.95--90.02] & 68.1 & 95.7\\ 
 \midrule
 \midrule
 DenseNet121 & & BrEaST & BrEaST & 79.0 [73.50--83.56] & 67.4 & 86.4\\ 
 \midrule
-Top 5 & sum & BrEaST & BrEaST & 81.4 [76.06--85.70] & 71.4 & 87.7\\ 
-Top 5 (weighted) & prod & BrEaST & BrEaST & 81.4 [76.06--85.70] & 71.4 & 87.7\\ 
-Top 5 (weighted) & sum & BrEaST & BrEaST & 81.4 [76.06--85.70] & 71.4 & 87.7\\ 
 Top 7 (weighted) & sum & BrEaST & BrEaST & 80.6 [75.20--84.99] & 69.3 & 87.7\\ 
+Top 7 & prod & BrEaST & BrEaST & 80.2 [74.78--84.63] & 68.3 & 87.7\\ 
+Top 7 & sum & BrEaST & BrEaST & 80.2 [74.78--84.63] & 68.3 & 87.7\\ 
+Top 5 (weighted) & sum & BrEaST & BrEaST & 79.8 [74.35--84.28] & 68.4 & 87.0\\ 
 \midrule
 \midrule
 \bottomrule
