@@ -2,7 +2,7 @@
 
 ### by [Francesco Bianconi](www.bianconif.net), [Muhammah U. Khan](https://www.linkedin.com/in/usama-khan-0a509211a/), [Hongbo Du](https://www.buckingham.ac.uk/directory/mr-hongbo-du/) and [Sabah Jassim](https://www.buckingham.ac.uk/directory/professor-sabah-jassim/)
 
-### To appear in [Ultrasonic Imaging](https://journals.sagepub.com/home/UIX)
+### [Ultrasonic Imaging](https://journals.sagepub.com/home/UIX), published 28 Aug. 2025, online first. [Link to paper]((https://doi.org/10.1177/01617346251362168)).
 
 ## Companion website
 
